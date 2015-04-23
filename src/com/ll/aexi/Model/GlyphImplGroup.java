@@ -71,6 +71,6 @@ public abstract class GlyphImplGroup extends GlyphImpl {
         }
         if (!toBeHandledGlyph.dispatchClickEvent(e))
             return onClickEvent(e);
-        return false;
+        return true;
     }
 }
