@@ -53,16 +53,21 @@ public class Row extends GlyphImplGroup {
         Caret caret = Caret.getInstance();
         Frame frame = null;
         if (getChildren().size() <= 0) {
+            //TODO :这里又要设置columIndex了,一定要想办法解决
             //没有子图元,就设置caret到行首
+            //抛出异常
             frame = new Frame(getFrame());
             caret.setDocumentIndex(getStartDocumentIndex());
         } else {
             //因为排版是从左到右排
             //所以没有子图元能够处理此事件是因为点击位置在本行最后一个子图元的右边,应该把caret设置过去
-            GlyphImpl glyph = getChildren().get(getChildren().size() - 1);
+            BasicGlyph glyph = (BasicGlyph) getChildren().get(getChildren().size() - 1);
             frame = new Frame(glyph.getFrame());
             frame.setX(frame.getX() + frame.getWidth());
-            caret.setDocumentIndex(getEndDocumentIndex());
+            caret.setDocumentIndex(glyph.getDocumentIndex() + 1);
+            caret.setColumnIndex(getChildren().indexOf(glyph) + 1);
+            Page page = (Page) getParent();
+            caret.setRowIndex(page.getChildren().indexOf(this));
         }
         caret.setFrame(frame);
         //设置caret的三个属性.

@@ -25,22 +25,23 @@ public class TestCompositor implements Compositor {
         //page的初始化
         Page page = new Page();
         composition.append(page);
-        Row row = new Row();
-        row.setStartDocumentIndex(0);
-        page.append(row);
+        Row row = null;
+        //当前的排版算法非常不安全
         for (int i = 0; it.hasNext(); i++) {
             Character glyph = (Character) it.next();
             glyph.setDocumentIndex(i);
             if (glyph.getaChar() == '\n') {
-                row.setEndDocumentIndex(i);
                 row = new Row();
-                row.setStartDocumentIndex(i);
                 page.append(row);
+                row.append(glyph);
                 continue;
             }
-            if (!row.append(glyph))
+            if (!row.append(glyph)) {
                 //该行已经满了,切换下一行
                 row = new Row();
+                page.append(row);
+                row.append(new Character('\n', null));
+            }
             continue;
         }
     }

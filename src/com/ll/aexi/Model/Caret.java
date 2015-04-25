@@ -85,6 +85,7 @@ public class Caret extends GlyphImpl {
 
     public void setComposition(Composition composition) {
         this.composition = composition;
+        setDocumentIndex(composition.getDocument().getChildren().size());
     }
 
     @Override

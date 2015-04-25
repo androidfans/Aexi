@@ -5,6 +5,7 @@ import com.ll.aexi.Control.TestCompositor;
 import com.ll.aexi.Interface.CaretListener;
 import com.ll.aexi.Interface.CompositionListener;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -22,6 +23,10 @@ public class Composition extends GlyphImplGroup implements CaretListener {
 
     public void init() {
         document = new Document();
+        //TODO:这里append进去的东西会一直在最后
+//        document.append(new Character('哈', new Font("宋体", Font.PLAIN, 20)));
+        //换成insert试试,这里没问题,关键是add完了之后没有修改documentIndex
+        document.append(new Character('\n', new Font("宋体", Font.PLAIN, 20)));
         //TODO 改成工厂模式,使用配置文件生成
         Compositor compositor = new TestCompositor();
         compositor.setComposition(this);
@@ -29,6 +34,7 @@ public class Composition extends GlyphImplGroup implements CaretListener {
         Caret caret = Caret.getInstance();
         caret.setComposition(this);
         setCaret(caret);
+        caret.setColumnIndex(1);
     }
 
     public void setCompositor(Compositor compositor) {
@@ -45,6 +51,7 @@ public class Composition extends GlyphImplGroup implements CaretListener {
 
     @Override
     public boolean append(GlyphImpl glyph) {
+        //TODO 要做健壮性检查
         Page page = (Page) glyph;
         glyph.setFrame(new Frame(0, 0, 600, 1200));
         super.append(glyph);
@@ -75,8 +82,10 @@ public class Composition extends GlyphImplGroup implements CaretListener {
         compositor.compose();
         int documentIndex = caret.getDocumentIndex();
         caret.setDocumentIndex(documentIndex + 1);
-        if (!caret.moveRight())
+        if (!caret.moveRight()) {
             caret.moveToNextRow();
+            caret.moveRight();
+        }
         if (compositor != null) {
             compositor.compose();
         }
