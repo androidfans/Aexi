@@ -18,7 +18,6 @@ public class Page extends GlyphImplGroup {
         if (children.size() <= 1) {
             frame.setY(getFrame().getY());
         } else {
-            //TODO super导致的索引位置问题
             Row preRow = (Row) children.get(children.size() - 2);
             Frame preRowFrame = preRow.getFrame();
             frame.setY(preRowFrame.getY() + preRowFrame.getHeight());

@@ -9,7 +9,7 @@ public class MouseEvent {
     private int y;
 
     public MouseEvent(java.awt.event.MouseEvent mouseEvent) {
-        this.mouseEvent = mouseEvent;
+        setMouseEvent(mouseEvent);
     }
 
     public java.awt.event.MouseEvent getMouseEvent() {

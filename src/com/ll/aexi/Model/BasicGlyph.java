@@ -15,39 +15,17 @@ public abstract class BasicGlyph extends GlyphImpl {
     }
 
     @Override
-    public boolean hitRect(int x, int y) {
-        if (!super.hitRect(x, y))
-            return false;
-        /**
-         * 在这里应该修改caret的position.
-         * 可是会出现问题
-         * 问题一:在这里修改了position的话,那么对应的documentIndex也应该修改,怎么样通过position计算出DocumentIndex
-         * 问题二:每个图元怎么知道自己的页,行,列
-         */
-        /**
-         *修改caret的Frame,这里应该分为两步
-         * 第一步:根据坐标点判断点击的位置更加接近当前图元的左边还是右边
-         * 第二步:如果更加接近左边就把caret的frame赋值为glyph的x和
-         *        如果更加接近右边就要把caret的frame赋值为x,+frame.width,y
-         */
-        /**
-         * 修改完Frame之后需要修改documentIndex,还有三个Inex,最好能够封装到caret的内部
-         * 要获取该glyph对象在整个document对象中的位置index
-         * 如果插入在左边,就直接赋值为index
-         * 在右边就赋值为index + 1
-         * 关键在于每个glyph的documentIndex和换行符的关系需要在compositor的时候进行确定
-         */
+    public boolean onClickEvent(MouseEvent e) {
         //必须创建新对象,如果不创建一个新的对象会导致相应的字符的frame被重新赋值,造成一些不希望的错误
-
         int indexSupply = 0;
 
+        //计算frame的代码和设置行列的代码功能有点重复,
+
         Frame frame = new Frame(getFrame());
-        if (x - frame.getX() >= (frame.getWidth() / 2)) {
+        if (e.getX() - frame.getX() >= (frame.getWidth() / 2)) {
             frame.setX(frame.getX() + frame.getWidth());
             indexSupply = 1;
         }
-
-        //这部分代码放在这个函数里面有点不是很适合
         Caret caret = Caret.getInstance();
         caret.setFrame(frame);
         caret.setDocumentIndex(documentIndex + indexSupply);
@@ -56,7 +34,6 @@ public abstract class BasicGlyph extends GlyphImpl {
         GlyphImplGroup pageParent = (GlyphImplGroup) page.getParent();
         caret.setPageIndex(pageParent.getChildren().indexOf(page));
         caret.setRowIndex(page.getChildren().indexOf(row));
-        //这句代码要根据左边还是右边来判断
         caret.setColumnIndex(row.getChildren().indexOf(this) + indexSupply);
         return true;
     }

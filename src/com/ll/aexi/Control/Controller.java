@@ -65,11 +65,11 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     public void mouseClicked(MouseEvent e) {
         composition.hitRect(e.getX(), e.getY());
         System.out.println("mouseClicked");
+        composition.dispatchClickEvent(new com.ll.aexi.Model.MouseEvent(e));
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
         System.out.println("mousePressed");
     }
 

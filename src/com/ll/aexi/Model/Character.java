@@ -60,4 +60,10 @@ public class Character extends BasicGlyph {
         System.out.println("击中字符" + aChar);
         return true;
     }
+
+    @Override
+    public boolean onClickEvent(MouseEvent e) {
+        System.out.println("onClickEvent:" + aChar);
+        return super.onClickEvent(e);
+    }
 }

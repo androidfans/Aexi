@@ -26,12 +26,15 @@ public class TestCompositor implements Compositor {
         Page page = new Page();
         composition.append(page);
         Row row = new Row();
+        row.setStartDocumentIndex(0);
         page.append(row);
         for (int i = 0; it.hasNext(); i++) {
             Character glyph = (Character) it.next();
             glyph.setDocumentIndex(i);
             if (glyph.getaChar() == '\n') {
+                row.setEndDocumentIndex(i);
                 row = new Row();
+                row.setStartDocumentIndex(i);
                 page.append(row);
                 continue;
             }
