@@ -1,6 +1,7 @@
 package com.ll.aexi.Model;
 
 /**
+ * 自定义的鼠标事件类,封装了鼠标的坐标,用来屏蔽java平台的细节
  * Created by Liuli on 2015/4/23.
  */
 public class MouseEvent {
@@ -10,6 +11,11 @@ public class MouseEvent {
 
     public MouseEvent(java.awt.event.MouseEvent mouseEvent) {
         setMouseEvent(mouseEvent);
+    }
+
+    public MouseEvent(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public java.awt.event.MouseEvent getMouseEvent() {

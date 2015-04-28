@@ -15,12 +15,13 @@ public class Caret extends GlyphImpl {
     private int documentIndex = 0;
     private Composition composition;
     private Thread thread;
+    private boolean run = true;
 
     private Caret() {
         this.thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
+                while (run) {
                     show = !show;
                     if (caretListener != null)
                         caretListener.CaretRefresh(Caret.this);
@@ -142,6 +143,17 @@ public class Caret extends GlyphImpl {
     }
 
     public boolean moveDown() {
+        //计算出一个中心点坐标 然后分发成点击事件
+        //得到中心点的坐标
+        int centerX = getFrame().getWidth() / 2 + getFrame().getX();
+        //Caret没有高度
+        int centerY = getFrame().getHeight() / 2 + getFrame().getY();
+        //获得当前行的高度
+        Page page = (Page) composition.getChildren().get(pageIndex);
+        Row row = (Row) page.getChildren().get(rowIndex);
+        //进行偏移
+        centerY += row.getFrame().getHeight();
+        composition.dispatchClickEvent(new MouseEvent(centerX, centerY));
         return false;
     }
 
@@ -156,8 +168,20 @@ public class Caret extends GlyphImpl {
 
 
     public boolean moveUp() {
+        //计算出一个中心点坐标 然后分发成点击事件
+        //得到中心点的坐标
+        int centerX = getFrame().getWidth() / 2 + getFrame().getX();
+        //Caret没有高度
+        int centerY = getFrame().getHeight() / 2 + getFrame().getY();
+        //获得当前行的高度
+        Page page = (Page) composition.getChildren().get(pageIndex);
+        Row row = (Row) page.getChildren().get(rowIndex);
+        //进行偏移
+        centerY -= row.getFrame().getHeight();
+        composition.dispatchClickEvent(new MouseEvent(centerX, centerY));
         return false;
     }
+
 
 
     /**
@@ -177,6 +201,7 @@ public class Caret extends GlyphImpl {
             GlyphImpl glyphImpl = rowChildren.get(columnIndex - 1);
             Frame frame = new Frame(glyphImpl.getFrame());
             frame.setX(frame.getX() + frame.getWidth());
+            frame.setHeight(frame.getHeight());
             setFrame(frame);
         }
     }

@@ -2,6 +2,7 @@ package com.ll.aexi.Control;
 
 import com.ll.aexi.Interface.CaretListener;
 import com.ll.aexi.Interface.CompositionListener;
+import com.ll.aexi.Model.Caret;
 import com.ll.aexi.Model.Character;
 import com.ll.aexi.Model.Composition;
 import com.ll.aexi.Model.Glyph;
@@ -14,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /**
+ *处理键盘及鼠标逻辑的控制器类
  * Created by Liuli on 2015/3/19.
  */
 public class Controller implements CaretListener, KeyListener, CompositionListener, MouseListener {
@@ -41,12 +43,28 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
 
     @Override
     public void keyPressed(KeyEvent e) {
+        //方向键的按下不会触发keyTyped事件
         System.out.println("key preesed");
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        //TODO 换行符的字体需要再次考虑
+        Caret caret = Caret.getInstance();
+
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_RIGHT:
+                caret.moveRight();
+                break;
+            case KeyEvent.VK_LEFT:
+                caret.moveLeft();
+                break;
+            case KeyEvent.VK_DOWN:
+                caret.moveDown();
+                break;
+            case KeyEvent.VK_UP:
+                caret.moveUp();
+                break;
+        }
         System.out.println("key released");
     }
 
