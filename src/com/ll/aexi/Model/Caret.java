@@ -146,7 +146,6 @@ public class Caret extends GlyphImpl {
         //计算出一个中心点坐标 然后分发成点击事件
         //得到中心点的坐标
         int centerX = getFrame().getWidth() / 2 + getFrame().getX();
-        //Caret没有高度
         int centerY = getFrame().getHeight() / 2 + getFrame().getY();
         //获得当前行的高度
         Page page = (Page) composition.getChildren().get(pageIndex);

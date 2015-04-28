@@ -27,10 +27,14 @@ public class TextView extends JPanel implements CaretListener {
         super.paintComponent(g);
         if (composition == null || caret == null)
             return;
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        drawBackGroud(g);
         composition.drawMe(g);
         caret.drawMe(g);
+    }
+
+    private void drawBackGroud(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 
     public void setCaret(Caret caret) {
