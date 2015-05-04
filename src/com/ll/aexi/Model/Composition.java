@@ -31,6 +31,7 @@ public class Composition extends GlyphImplGroup implements CaretListener {
         Compositor compositor = new TestCompositor();
         compositor.setComposition(this);
         setCompositor(compositor);
+        compositor.compose();
         Caret caret = Caret.getInstance();
         caret.setComposition(this);
         setCaret(caret);

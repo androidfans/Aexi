@@ -32,6 +32,7 @@ public class TextView extends JPanel implements CaretListener {
         caret.drawMe(g);
     }
 
+
     private void drawBackGroud(Graphics g) {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());

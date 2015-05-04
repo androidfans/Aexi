@@ -78,6 +78,7 @@ public class Caret extends GlyphImpl {
 
     public void setColumnIndex(int columnIndex) {
         this.columnIndex = columnIndex;
+        calculateFrame();
     }
 
     public Composition getComposition() {
@@ -99,7 +100,6 @@ public class Caret extends GlyphImpl {
     @Override
     public void setFrame(Frame frame) {
         super.setFrame(frame);
-        caretListener.CaretRefresh(this);
     }
 
     /**

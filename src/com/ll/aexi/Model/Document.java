@@ -11,6 +11,7 @@ public class Document extends GlyphImplGroup {
             if (character.getaChar() == '\n')
                 string = "\\n";
             System.out.print(string);
+            System.out.println();
         }
     }
 
