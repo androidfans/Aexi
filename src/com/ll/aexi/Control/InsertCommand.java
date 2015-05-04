@@ -20,7 +20,7 @@ public class InsertCommand implements Command {
     public boolean excute() {
         if (composition == null || character == null)
             return false;
-        return composition.insert(character, composition.getCaret().getDocumentIndex());
+        return composition.insert(character, composition.getCaret().getInsertIndex());
     }
 
     @Override

@@ -28,7 +28,6 @@ public abstract class BasicGlyph extends GlyphImpl {
         }
         Caret caret = Caret.getInstance();
         caret.setFrame(frame);
-        caret.setDocumentIndex(documentIndex + indexSupply);
         Row row = (Row) getParent();
         Page page = (Page) row.getParent();
         GlyphImplGroup pageParent = (GlyphImplGroup) page.getParent();

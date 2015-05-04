@@ -62,12 +62,10 @@ public class Row extends GlyphImplGroup {
             //没有子图元,就设置caret到行首
             //抛出异常
             frame = new Frame(getFrame());
-            caret.setDocumentIndex(getStartDocumentIndex());
         } else {
             //因为排版是从左到右排
             //所以没有子图元能够处理此事件是因为点击位置在本行最后一个子图元的右边,应该把caret设置过去
             BasicGlyph glyph = (BasicGlyph) getChildren().get(getChildren().size() - 1);
-            caret.setDocumentIndex(glyph.getDocumentIndex() + 1);
             //因为没有及时修改rowIndex导致这里出现Bug
             caret.setColumnIndex(getChildren().indexOf(glyph) + 1);
         }

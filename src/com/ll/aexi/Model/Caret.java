@@ -12,7 +12,6 @@ public class Caret extends GlyphImpl {
     private int rowIndex = 0;
     private int columnIndex = 0;
     private boolean show = true;
-    private int documentIndex = 0;
     private Composition composition;
     private Thread thread;
     private boolean run = true;
@@ -40,13 +39,16 @@ public class Caret extends GlyphImpl {
         return instance;
     }
 
-    public int getDocumentIndex() {
-        return documentIndex;
+    public int getInsertIndex() {
+        //找到开头的Index
+        //先找到对应的row
+        Page page = (Page) composition.getChildren().get(pageIndex);
+        Row row = (Row) page.getChildren().get(rowIndex);
+        BasicGlyph glyph = (BasicGlyph) row.getChildren().get(0);
+        int index = glyph.getDocumentIndex();
+        return index + columnIndex;
     }
 
-    public void setDocumentIndex(int documentIndex) {
-        this.documentIndex = documentIndex;
-    }
 
     public void setCaretListener(CaretListener caretListener) {
         this.caretListener = caretListener;
@@ -87,7 +89,6 @@ public class Caret extends GlyphImpl {
 
     public void setComposition(Composition composition) {
         this.composition = composition;
-        setDocumentIndex(composition.getDocument().getChildren().size());
     }
 
     @Override

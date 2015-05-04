@@ -84,15 +84,13 @@ public class Composition extends GlyphImplGroup implements CaretListener {
     public boolean insert(GlyphImpl glyph, int index) {
         document.insert(glyph, index);
         compositor.compose();
-        int documentIndex = caret.getDocumentIndex();
-        caret.setDocumentIndex(documentIndex + 1);
+        int documentIndex = caret.getInsertIndex();
         if (!caret.moveRight()) {
             caret.moveToNextRow();
             caret.moveRight();
         }
-        if (compositor != null) {
+        if (compositor != null)
             compositor.compose();
-        }
         return true;
     }
 
