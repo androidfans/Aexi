@@ -5,6 +5,7 @@ import com.ll.aexi.Model.Composition;
 import com.ll.aexi.Model.Page;
 import com.ll.aexi.Model.Row;
 
+import java.awt.*;
 import java.util.Iterator;
 
 public class TestCompositor implements Compositor {
@@ -40,7 +41,8 @@ public class TestCompositor implements Compositor {
                 //该行已经满了,切换下一行
                 row = new Row();
                 page.append(row);
-                row.append(new Character('\n', null));
+                row.append(new Character('\n', new Font("宋体", Font.PLAIN, 20)));
+                row.append(glyph);
             }
             continue;
         }

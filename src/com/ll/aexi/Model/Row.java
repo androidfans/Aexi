@@ -37,6 +37,9 @@ public class Row extends GlyphImplGroup {
             Frame preFrame = children.get(children.size() - 1).getFrame();
             x = preFrame.getX() + preFrame.getWidth();
         }
+        //如果最后一个图元的右边超过本行的最大宽度则不允许插入
+        if (x + frame.getWidth() > getFrame().getWidth())
+            return false;
         frame.setX(x);
         frame.setY(getFrame().getY());
         glyph.setFrame(frame);
@@ -49,11 +52,13 @@ public class Row extends GlyphImplGroup {
 
     @Override
     public boolean onClickEvent(MouseEvent e) {
-        //进入这里说明本行中没有一个子图元能够处理该事件,或者本行中就没有子图元,应该设计一种默认的处理方式.
         Caret caret = Caret.getInstance();
-        Frame frame = null;
+        //应该先给caret设置行号
+        Page page = (Page) getParent();
+        caret.setRowIndex(page.getChildren().indexOf(this));
+        //进入这里说明本行中没有一个子图元能够处理该事件,或者本行中就没有子图元,应该设计一种默认的处理方式.
         if (getChildren().size() <= 0) {
-            //TODO :这里又要设置columIndex了,一定要想办法解决
+            //TODO :这里又要设置columIndex了,一定要想办法解决 ,还有rowIndex 不然会出现莫名其妙的bug
             //没有子图元,就设置caret到行首
             //抛出异常
             frame = new Frame(getFrame());
@@ -62,15 +67,11 @@ public class Row extends GlyphImplGroup {
             //因为排版是从左到右排
             //所以没有子图元能够处理此事件是因为点击位置在本行最后一个子图元的右边,应该把caret设置过去
             BasicGlyph glyph = (BasicGlyph) getChildren().get(getChildren().size() - 1);
-            frame = new Frame(glyph.getFrame());
-            frame.setX(frame.getX() + frame.getWidth());
             caret.setDocumentIndex(glyph.getDocumentIndex() + 1);
+            //因为没有及时修改rowIndex导致这里出现Bug
             caret.setColumnIndex(getChildren().indexOf(glyph) + 1);
-            Page page = (Page) getParent();
-            caret.setRowIndex(page.getChildren().indexOf(this));
         }
-        caret.setFrame(frame);
-        //设置caret的三个属性.
+
         return super.onClickEvent(e);
     }
 }

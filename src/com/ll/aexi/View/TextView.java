@@ -4,7 +4,6 @@ import com.ll.aexi.Interface.CaretListener;
 import com.ll.aexi.Model.Caret;
 import com.ll.aexi.Model.Composition;
 import com.ll.aexi.Model.Glyph;
-
 import javax.swing.*;
 import java.awt.*;
 

@@ -4,6 +4,7 @@ import com.ll.aexi.Control.Compositor;
 import com.ll.aexi.Control.TestCompositor;
 import com.ll.aexi.Interface.CaretListener;
 import com.ll.aexi.Interface.CompositionListener;
+import com.ll.aexi.View.PageStyle;
 
 import java.awt.*;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Composition extends GlyphImplGroup implements CaretListener {
     private Document document;
     private CompositionListener compositionListener;
     private Caret caret;
+    private PageStyle pageStyle;
 
     public Composition() {
         init();
@@ -23,9 +25,9 @@ public class Composition extends GlyphImplGroup implements CaretListener {
 
     public void init() {
         document = new Document();
-        //TODO:这里append进去的东西会一直在最后
-//        document.append(new Character('哈', new Font("宋体", Font.PLAIN, 20)));
-        //换成insert试试,这里没问题,关键是add完了之后没有修改documentIndex
+        //设置页面的大小
+        //这里不应该给textView设置大小,textView的大小应该由屏幕决定,而页面内部应该可以画滚动条
+        pageStyle = new PageStyle();
         document.append(new Character('\n', new Font("宋体", Font.PLAIN, 20)));
         //TODO 改成工厂模式,使用配置文件生成
         Compositor compositor = new TestCompositor();
@@ -36,6 +38,7 @@ public class Composition extends GlyphImplGroup implements CaretListener {
         caret.setComposition(this);
         setCaret(caret);
         caret.setColumnIndex(1);
+
     }
 
     public void setCompositor(Compositor compositor) {
@@ -52,9 +55,9 @@ public class Composition extends GlyphImplGroup implements CaretListener {
 
     @Override
     public boolean append(GlyphImpl glyph) {
-        //TODO 要做健壮性检查
+        //TODO 不可能只有一个page需要改进
         Page page = (Page) glyph;
-        glyph.setFrame(new Frame(0, 0, 600, 1200));
+        glyph.setFrame(new Frame(pageStyle.getLeftMargin(), pageStyle.getTopMargin(), pageStyle.getWidth(), pageStyle.getHeight()));
         super.append(glyph);
         if (compositionListener != null)
             compositionListener.documentRefresh(this);

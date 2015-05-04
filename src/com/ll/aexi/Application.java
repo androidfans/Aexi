@@ -13,7 +13,7 @@ import javax.swing.*;
 public class Application {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Aexi");
-        frame.setBounds(500, 200, 500, 500);
+        frame.setBounds(500, 200, 1000, 1000);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
