@@ -30,7 +30,7 @@ public abstract class GlyphImplGroup extends GlyphImpl {
     }
 
     public boolean remove(int index) {
-        children.remove(index);
+         children.remove(index);
         return true;
     }
 

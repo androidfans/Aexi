@@ -44,9 +44,7 @@ public class Caret extends GlyphImpl {
         //先找到对应的row
         Page page = (Page) composition.getChildren().get(pageIndex);
         Row row = (Row) page.getChildren().get(rowIndex);
-        BasicGlyph glyph = (BasicGlyph) row.getChildren().get(0);
-        int index = glyph.getDocumentIndex();
-        return index + columnIndex;
+        return row.getStartDocumentIndex() + columnIndex;
     }
 
 

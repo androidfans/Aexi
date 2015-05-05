@@ -37,8 +37,6 @@ public class Composition extends GlyphImplGroup implements CaretListener {
         Caret caret = Caret.getInstance();
         caret.setComposition(this);
         setCaret(caret);
-        caret.setColumnIndex(1);
-
     }
 
     public void setCompositor(Compositor compositor) {
@@ -84,7 +82,7 @@ public class Composition extends GlyphImplGroup implements CaretListener {
     public boolean insert(GlyphImpl glyph, int index) {
         document.insert(glyph, index);
         compositor.compose();
-        int documentIndex = caret.getInsertIndex();
+        int insertIndex = caret.getInsertIndex();
         if (!caret.moveRight()) {
             caret.moveToNextRow();
             caret.moveRight();
@@ -99,6 +97,15 @@ public class Composition extends GlyphImplGroup implements CaretListener {
         List<GlyphImpl> children = getChildren();
         for (Glyph glyph : children) {
             glyph.hitRect(x, y);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean remove(int index) {
+        document.remove(index);
+        if (compositor != null) {
+            compositor.compose();
         }
         return true;
     }

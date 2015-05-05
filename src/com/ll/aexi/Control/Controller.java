@@ -23,7 +23,7 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     private Composition composition;
     private TextView textView;
     //当前设置的字体信息,先设置一个默认值
-    private Font font = new Font("宋体", Font.PLAIN, 20);
+    private Font font = new Font("微软雅黑", Font.BOLD, 20);
 
     public void setTextView(TextView textView) {
         this.textView = textView;
@@ -39,15 +39,20 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
         System.out.println("key typed");
         //TODO 需要把这里抽象出一层,按下特殊功能键时,keytyped仍然会被调用,keychar为\n
 //        composition.insert(new Character(e.getKeyChar(), font), composition.getCaret().getDocumentIndex());
+        CommandManager commandManager = CommandManager.getInstance();
+        Command command = null;
 
         //现在存在的问题:代码太多插入一个字符需要修改太多的代码.
         //步骤太过于复杂
         //但是不可以把诸如insert之类的command封装到commandManager的内部,如果需要增加新的操作就需要修改commandMannager和command两个地方
         //但是可以考虑的是对于的文档的操作的数量基本上是固定的.
         //先不进行修改,先完成其他的地方
-        InsertCommand insertCommand = new InsertCommand(composition,new Character(e.getKeyChar(),font));
-        CommandManager commandManager = CommandManager.getInstance();
-        commandManager.setCurrentCommand(insertCommand);
+        if (e.getKeyChar() == '\b') {
+            command = new DeleteCommand(composition);
+        }else {
+            command = new InsertCommand(composition,new Character(e.getKeyChar(),font));
+        }
+        commandManager.setCurrentCommand(command);
         commandManager.excuteCommand();
     }
 

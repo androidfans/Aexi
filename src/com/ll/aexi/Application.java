@@ -2,6 +2,7 @@ package com.ll.aexi;
 
 import com.ll.aexi.Control.Controller;
 import com.ll.aexi.Model.Composition;
+import com.ll.aexi.View.AexiMenu;
 import com.ll.aexi.View.TextView;
 import javax.swing.*;
 
@@ -13,7 +14,6 @@ public class Application {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Aexi");
         frame.setBounds(500, 200, 1000, 1000);
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         TextView textView = new TextView();
@@ -29,5 +29,9 @@ public class Application {
         composition.setCompositionListener(controller);
         controller.setComposition(composition);
         textView.setComposition(composition);
+
+        JMenuBar aexiMenu = new AexiMenu();
+        frame.setJMenuBar(aexiMenu);
+        frame.setVisible(true);
     }
 }

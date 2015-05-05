@@ -37,6 +37,8 @@ public class Paper {
      */
     public static final Paper A4 = new Paper("A4", 21.0f, 29.7f, 3.17f, 3.17f, 2.54f, 2.54f);
 
+    public static final Paper TEST = new Paper("TEST", 10.0f, 10.7f, 3.17f, 3.17f, 2.54f, 2.54f);
+
     /**
      * Custom
      */

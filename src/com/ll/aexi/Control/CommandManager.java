@@ -26,11 +26,6 @@ public class CommandManager {
         commands.add(currentCommand);
     }
 
-
-
-
-
-
     //单例相关代码
     private static CommandManager instance = new CommandManager();
 

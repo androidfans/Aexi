@@ -24,27 +24,30 @@ public class TestCompositor implements Compositor {
          * 第四步:创建一个新的row,append到page中,并将该row的引用赋值给当前row
          */
         //page的初始化
+        //TODO 如果document是空  那么应该恢复为初始状态
         Page page = new Page();
         composition.append(page);
-        Row row = null;
+        Row row = new Row();
         //当前的排版算法非常不安全
         for (int i = 0; it.hasNext(); i++) {
             Character glyph = (Character) it.next();
             glyph.setDocumentIndex(i);
             if (glyph.getaChar() == '\n') {
                 row = new Row();
+                row.setStartDocumentIndex(i);
                 page.append(row);
                 row.append(glyph);
                 continue;
             }
             if (!row.append(glyph)) {
-                //该行已经满了,切换下一行
                 row = new Row();
+                row.setStartDocumentIndex(i);
                 page.append(row);
-                row.append(new Character('\n', new Font("宋体", Font.PLAIN, 20)));
                 row.append(glyph);
             }
-            continue;
+        }
+        if (page.getChildren().size() <= 0) {
+            page.append(row);
         }
     }
 
