@@ -17,11 +17,15 @@ public class DeleteCommand implements Command {
 
     @Override
     public boolean excute() {
-        int index = Caret.getInstance().getInsertIndex() - 1;
-        if (index <= 0)
+        Caret caret = Caret.getInstance();
+        int index = caret.getInsertIndex() - 1;
+        if (index < 0)
             return false;
         composition.remove(index);
-        Caret.getInstance().moveLeft();
+        if (!caret.moveLeft()) {
+            caret.moveToPreviousRow();
+            caret.moveToLineEnd();
+        }
         return true;
     }
 

@@ -164,6 +164,12 @@ public class Caret extends GlyphImpl {
         return true;
     }
 
+    public void moveToLineEnd() {
+        Page page = (Page) composition.getChildren().get(pageIndex);
+        Row row = (Row) page.getChildren().get(rowIndex);
+        columnIndex = row.getChildren().size();
+    }
+
 
     public boolean moveUp() {
         //计算出一个中心点坐标 然后分发成点击事件
