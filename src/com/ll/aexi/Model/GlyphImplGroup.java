@@ -29,9 +29,8 @@ public abstract class GlyphImplGroup extends GlyphImpl {
         return true;
     }
 
-    public boolean remove(int index) {
-         children.remove(index);
-        return true;
+    public Glyph remove(int index) {
+        return children.remove(index);
     }
 
     public boolean clear() {

@@ -123,6 +123,9 @@ public class Caret extends GlyphImpl {
     }
 
     public boolean moveLeft() {
+        //如果行首的字符是换行符 那么左移也应该返回false
+        //先检查合法性
+//        ensureIndexAvailable();
         if (columnIndex <= 0)
             return false;
         columnIndex--;
@@ -168,6 +171,7 @@ public class Caret extends GlyphImpl {
         Page page = (Page) composition.getChildren().get(pageIndex);
         Row row = (Row) page.getChildren().get(rowIndex);
         columnIndex = row.getChildren().size();
+        calculateFrame();
     }
 
 
@@ -186,12 +190,26 @@ public class Caret extends GlyphImpl {
         return false;
     }
 
+    private int ensureRange(int min, int max, int v) {
+        if(min>v) return min;
+        if(max<v) return max;
+        return v;
+    }
 
+    // make sure all the index is available:
+    private void ensureIndexAvailable() {
+        pageIndex = ensureRange(0, composition.getChildren().size()-1, pageIndex);
+        Page page = (Page) composition.getChildren().get(pageIndex);
+        rowIndex = ensureRange(0, page.getChildren().size()-1, rowIndex);
+        Row row = (Row)page.getChildren().get(rowIndex);
+        columnIndex = ensureRange(0, row.getChildren().size(), columnIndex);
+    }
 
     /**
      * 根据所赋值的页,行,列的值计算出caret的高度、x值、y值
      */
     public void calculateFrame() {
+//        ensureIndexAvailable();
         //根据三个index计算x,y值.难点:文字的大小无法确定
         //第一步:取到对应的row page column
         Page page = (Page) composition.getChildren().get(pageIndex);

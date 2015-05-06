@@ -21,4 +21,11 @@ public class Document extends GlyphImplGroup {
         debug();
         return true;
     }
+
+    @Override
+    public Glyph remove(int index) {
+        Glyph glyph = super.remove(index);
+        debug();
+        return glyph;
+    }
 }

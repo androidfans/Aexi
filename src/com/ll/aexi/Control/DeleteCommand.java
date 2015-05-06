@@ -1,7 +1,7 @@
 package com.ll.aexi.Control;
 
-import com.ll.aexi.Model.Caret;
-import com.ll.aexi.Model.Composition;
+import com.ll.aexi.Model.*;
+import com.ll.aexi.Model.Character;
 
 /**
  * Created by Liuli on 2015/5/5.
@@ -21,8 +21,13 @@ public class DeleteCommand implements Command {
         int index = caret.getInsertIndex() - 1;
         if (index < 0)
             return false;
-        composition.remove(index);
-        if (!caret.moveLeft()) {
+        //TODO 这样的代码有点难以维护,需要修改
+        Character character = (Character) composition.remove(index);
+
+        if (character.getaChar() == '\n') {
+            caret.moveToPreviousRow();
+            caret.moveToLineEnd();
+        }else if (!caret.moveLeft()) {
             caret.moveToPreviousRow();
             caret.moveToLineEnd();
         }
