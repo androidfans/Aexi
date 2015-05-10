@@ -22,15 +22,12 @@ public class CommandManager {
 
 
     private void addToCommandList() {
-        assert currentCommand.canUndo();
-        commands.add(currentCommand);
+        if (currentCommand.canUndo())
+            commands.add(currentCommand);
     }
 
-    //单例相关代码
     private static CommandManager instance = new CommandManager();
-
     private CommandManager() {}
-
     public static CommandManager getInstance() {
         return instance;
     }

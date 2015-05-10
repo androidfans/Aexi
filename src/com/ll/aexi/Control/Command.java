@@ -9,5 +9,4 @@ public interface Command {
     public void unExcute();
 
     public boolean canUndo();
-
 }

@@ -58,14 +58,7 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
 
     @Override
     public void keyPressed(KeyEvent e) {
-        //方向键的按下不会触发keyTyped事件
-        System.out.println("key preesed");
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
         Caret caret = Caret.getInstance();
-
         switch (e.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
                 caret.moveRight();
@@ -80,6 +73,12 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
                 caret.moveUp();
                 break;
         }
+        //方向键的按下不会触发keyTyped事件
+        System.out.println("key preesed");
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
         System.out.println("key released");
     }
 

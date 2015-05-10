@@ -26,9 +26,7 @@ public class Composition extends GlyphImplGroup implements CaretListener {
     public void init() {
         document = new Document();
         //设置页面的大小
-        //这里不应该给textView设置大小,textView的大小应该由屏幕决定,而页面内部应该可以画滚动条
         pageStyle = new PageStyle();
-//        document.append(new Character('\n', new Font("宋体", Font.PLAIN, 20)));
         //TODO 改成工厂模式,使用配置文件生成
         Compositor compositor = new TestCompositor();
         compositor.setComposition(this);
