@@ -5,6 +5,15 @@ package com.ll.aexi.Model;
  */
 public abstract class BasicGlyph extends GlyphImpl {
     private int documentIndex = 0;
+    private boolean isSelected = false;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
 
     public int getDocumentIndex() {
         return documentIndex;

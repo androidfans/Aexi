@@ -18,6 +18,15 @@ public class Composition extends GlyphImplGroup implements CaretListener {
     private CompositionListener compositionListener;
     private Caret caret;
     private PageStyle pageStyle;
+    private Selection selection = new Selection(this);
+
+    public Selection getSelection() {
+        return selection;
+    }
+
+    public void setSelection(Selection selection) {
+        this.selection = selection;
+    }
 
     public Composition() {
         init();

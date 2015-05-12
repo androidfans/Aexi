@@ -40,8 +40,12 @@ public class Character extends BasicGlyph {
 
     @Override
     public void drawMe(Graphics g) {
-        g.setFont(font);
+        if (isSelected()) {
+            g.setColor(new Color(0x46,0xa3,0xff));
+            g.fillRect(frame.getX(),frame.getY(),frame.getWidth(),frame.getHeight());
+        }
         g.setColor(Color.BLACK);
+        g.setFont(font);
         g.drawString(aChar + "", frame.getX(), frame.getY() + fm.getAscent());
     }
 

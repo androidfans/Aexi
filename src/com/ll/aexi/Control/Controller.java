@@ -2,23 +2,20 @@ package com.ll.aexi.Control;
 
 import com.ll.aexi.Interface.CaretListener;
 import com.ll.aexi.Interface.CompositionListener;
-import com.ll.aexi.Model.Caret;
+import com.ll.aexi.Model.*;
 import com.ll.aexi.Model.Character;
-import com.ll.aexi.Model.Composition;
-import com.ll.aexi.Model.Glyph;
 import com.ll.aexi.View.TextView;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 /**
  *处理键盘及鼠标逻辑的控制器类
  * Created by Liuli on 2015/3/19.
  */
-public class Controller implements CaretListener, KeyListener, CompositionListener, MouseListener {
+public class Controller implements CaretListener, KeyListener, CompositionListener, MouseListener,MouseMotionListener {
 
     private Composition composition;
     private TextView textView;
@@ -102,11 +99,30 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     @Override
     public void mousePressed(MouseEvent e) {
         System.out.println("mousePressed");
+        //找到遍历找到哪个字符被击中了
+        BasicGlyph startGlyph = findHitedGlyph(e);
+        if (startGlyph != null)
+            composition.getSelection().setStartIndex(startGlyph.getDocumentIndex());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         System.out.println("mouseReleased");
+        BasicGlyph endGlyph = findHitedGlyph(e);
+        if (endGlyph != null)
+            composition.getSelection().setEndIndex(endGlyph.getDocumentIndex());
+    }
+
+    private BasicGlyph findHitedGlyph(MouseEvent e) {
+        ArrayList<BasicGlyph> characters = (ArrayList) composition.getDocument().getChildren();
+        BasicGlyph hitedGlyph = null;
+        for (BasicGlyph glyph : characters) {
+            if (glyph.hitRect(e.getX(), e.getY())) {
+                hitedGlyph = glyph;
+                break;
+            }
+        }
+        return hitedGlyph;
     }
 
     @Override
@@ -117,5 +133,18 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     @Override
     public void mouseExited(MouseEvent e) {
         System.out.println("mouseExited");
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        System.out.println("mouseReleased");
+        BasicGlyph endGlyph = findHitedGlyph(e);
+        if (endGlyph != null)
+            composition.getSelection().setEndIndex(endGlyph.getDocumentIndex());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
     }
 }
