@@ -26,7 +26,7 @@ public class Application {
         textView.addMouseListener(controller);
         textView.addMouseMotionListener(controller);
 
-        Composition composition = new Composition();
+        Composition composition = Composition.getInstance();
         composition.setCompositionListener(controller);
         controller.setComposition(composition);
         textView.setComposition(composition);

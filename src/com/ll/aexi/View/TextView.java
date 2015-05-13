@@ -31,7 +31,6 @@ public class TextView extends JPanel implements CaretListener {
         caret.drawMe(g);
     }
 
-
     private void drawBackGroud(Graphics g) {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
@@ -40,6 +39,11 @@ public class TextView extends JPanel implements CaretListener {
     public void setCaret(Caret caret) {
         this.caret = caret;
         caret.setCaretListener(TextView.this);
+    }
+
+    @Override
+    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
+        return super.imageUpdate(img, infoflags, x, y, w, h);
     }
 
     @Override

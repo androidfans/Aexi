@@ -1,6 +1,16 @@
 package com.ll.aexi.View;
 
+import com.ll.aexi.Control.CommandManager;
+import com.ll.aexi.Control.InsertCommand;
+import com.ll.aexi.Model.Bitmap;
+import com.ll.aexi.Model.Composition;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * Created by Administrator on 2015/5/5.
@@ -42,6 +52,33 @@ public class AexiMenu extends JMenuBar {
 
         JMenu insertMenu = new JMenu("插入");
         JMenuItem pictureItem = new JMenuItem("图片");
+        pictureItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("插入图片");
+                JFileChooser jFileChooser = new JFileChooser();
+                jFileChooser.showOpenDialog(getParent());
+                jFileChooser.setFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        //需要修改
+                        return f.getName().endsWith(".jpg");
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return null;
+                    }
+                });
+                File selectedFile = jFileChooser.getSelectedFile();
+                if (selectedFile == null)
+                    return;
+                String path = jFileChooser.getSelectedFile().getAbsolutePath();
+                InsertCommand insertCommand = new InsertCommand(Composition.getInstance(), new Bitmap(Toolkit.getDefaultToolkit().getImage(path)));
+                CommandManager.getInstance().setCurrentCommand(insertCommand);
+                CommandManager.getInstance().excuteCommand();
+            }
+        });
         insertMenu.add(pictureItem);
 
 
@@ -71,9 +108,5 @@ public class AexiMenu extends JMenuBar {
         add(formatMenu);
         add(toolsMenu);
         add(helpMenu);
-
-
-
-
     }
 }

@@ -27,7 +27,6 @@ public class Row extends GlyphImplGroup {
 
     @Override
     public boolean append(GlyphImpl glyph) {
-        //TODO 这里还需要动态修改该行自己的行高
         List<GlyphImpl> children = getChildren();
         int x = 0;
         Frame frame = glyph.getFrame();
@@ -41,14 +40,30 @@ public class Row extends GlyphImplGroup {
         if (x + frame.getWidth() > getFrame().getWidth())
             return false;
         frame.setX(x);
-        frame.setY(getFrame().getY());
+        if (getFrame().getHeight() > glyph.getFrame().getHeight()) {
+            int y = getFrame().getHeight() + getFrame().getY() - glyph.getFrame().getHeight();
+            glyph.getFrame().setY(y);
+        } else {
+            frame.setY(getFrame().getY());
+        }
         glyph.setFrame(frame);
         //每插入一个图元就要检查一下高度是否超过限制,并调整自身高度
-        if (frame.getHeight() > getFrame().getHeight())
+        if (frame.getHeight() > getFrame().getHeight()) {
             getFrame().setHeight(frame.getHeight());
+            fixHeight(getChildren().size());
+        }
         return super.append(glyph);
     }
 
+
+    private void fixHeight(int index) {
+        List<GlyphImpl> glyphs = getChildren();
+        for (int i = 0; i < index; i++) {
+            BasicGlyph glyph = (BasicGlyph) glyphs.get(i);
+            int y = frame.getHeight() + frame.getY() - glyph.getFrame().getHeight();
+            glyph.getFrame().setY(y);
+        }
+    }
 
     @Override
     public boolean onClickEvent(MouseEvent e) {

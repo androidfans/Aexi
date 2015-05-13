@@ -1,9 +1,7 @@
 package com.ll.aexi.Control;
 
+import com.ll.aexi.Model.*;
 import com.ll.aexi.Model.Character;
-import com.ll.aexi.Model.Composition;
-import com.ll.aexi.Model.Page;
-import com.ll.aexi.Model.Row;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -30,14 +28,17 @@ public class TestCompositor implements Compositor {
         Row row = new Row();
         //当前的排版算法非常不安全
         for (int i = 0; it.hasNext(); i++) {
-            Character glyph = (Character) it.next();
+            BasicGlyph glyph = (BasicGlyph) it.next();
             glyph.setDocumentIndex(i);
-            if (glyph.getaChar() == '\n') {
-                row = new Row();
-                row.setStartDocumentIndex(i);
-                page.append(row);
-                row.append(glyph);
-                continue;
+            glyph.setListener(composition);
+            if (glyph instanceof Character){
+                if (((Character)glyph).getaChar() == '\n') {
+                    row = new Row();
+                    row.setStartDocumentIndex(i);
+                    page.append(row);
+                    row.append(glyph);
+                    continue;
+                }
             }
             if (!row.append(glyph)) {
                 row = new Row();

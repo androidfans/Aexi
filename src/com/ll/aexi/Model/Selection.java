@@ -6,8 +6,8 @@ import java.util.List;
  * Created by Administrator on 2015/5/11.
  */
 public class Selection {
-    private int startIndex;
-    private int endIndex;
+    private int startIndex = UN_SELECTED;
+    private int endIndex = UN_SELECTED;
     private Composition composition;
     public static final int UN_SELECTED = -1;
 
@@ -31,11 +31,7 @@ public class Selection {
         this.endIndex = endIndex;
         if (endIndex == UN_SELECTED)
             return;
-        if (startIndex < endIndex) {
-            refreshGlyphsSelected(startIndex,endIndex);
-        }else {
-            refreshGlyphsSelected(endIndex,startIndex);
-        }
+        refreshGlyphsSelected(getMin(startIndex, endIndex), getMax(startIndex,endIndex));
     }
 
     private void refreshGlyphsSelected(int startIndex,int endIndex) {
@@ -54,10 +50,38 @@ public class Selection {
         }
     }
 
+    public boolean deleteSelection() {
+        if (endIndex == UN_SELECTED) {
+            return false;
+        }
+        int min = getMin(startIndex, endIndex);
+        int max = getMax(startIndex, endIndex);
+        for (int i = min; i <= max; i++) {
+            composition.remove(min);
+        }
+        endIndex = UN_SELECTED;
+        return false;
+    }
+
     public void unSelected() {
         endIndex = UN_SELECTED;
         startIndex = UN_SELECTED;
         List<GlyphImpl> glyphs = composition.getDocument().getChildren();
         clearGlyphSelected(glyphs);
     }
+
+    private int getMax(int a, int b) {
+        if (a >= b) {
+            return a;
+        }
+        return b;
+    }
+
+    private int getMin(int a, int b) {
+        if (a <= b) {
+            return a;
+        }
+        return b;
+    }
+
 }

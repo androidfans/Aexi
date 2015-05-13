@@ -4,6 +4,7 @@ import com.ll.aexi.Control.Compositor;
 import com.ll.aexi.Control.TestCompositor;
 import com.ll.aexi.Interface.CaretListener;
 import com.ll.aexi.Interface.CompositionListener;
+import com.ll.aexi.Interface.GlyphListener;
 import com.ll.aexi.View.PageStyle;
 
 import java.awt.*;
@@ -12,13 +13,14 @@ import java.util.List;
 /**
  * Created by Liuli on 2015/3/21.
  */
-public class Composition extends GlyphImplGroup implements CaretListener {
+public class Composition extends GlyphImplGroup implements CaretListener,GlyphListener {
     private Compositor compositor;
     private Document document;
     private CompositionListener compositionListener;
     private Caret caret;
     private PageStyle pageStyle;
     private Selection selection = new Selection(this);
+    private static Composition composition = new Composition();
 
     public Selection getSelection() {
         return selection;
@@ -28,7 +30,7 @@ public class Composition extends GlyphImplGroup implements CaretListener {
         this.selection = selection;
     }
 
-    public Composition() {
+    private Composition() {
         init();
     }
 
@@ -115,5 +117,16 @@ public class Composition extends GlyphImplGroup implements CaretListener {
             compositor.compose();
         }
         return glyph;
+    }
+
+    public static Composition getInstance() {
+        return composition;
+    }
+
+    @Override
+    public void glyphRefresh() {
+        if (compositor != null) {
+            compositor.compose();
+        }
     }
 }

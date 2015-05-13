@@ -1,11 +1,19 @@
 package com.ll.aexi.Model;
 
+import com.ll.aexi.Interface.GlyphListener;
+
 /**
  * Created by Liuli on 2015/4/17.
  */
 public abstract class BasicGlyph extends GlyphImpl {
     private int documentIndex = 0;
     private boolean isSelected = false;
+    protected GlyphListener listener;
+
+    public void setListener(GlyphListener listener) {
+        this.listener = listener;
+    }
+
 
     public boolean isSelected() {
         return isSelected;

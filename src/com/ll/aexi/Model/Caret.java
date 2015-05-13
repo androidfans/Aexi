@@ -2,6 +2,7 @@ package com.ll.aexi.Model;
 
 import com.ll.aexi.Interface.CaretListener;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
@@ -188,20 +189,6 @@ public class Caret extends GlyphImpl {
         return false;
     }
 
-//    private int ensureRange(int min, int max, int v) {
-//        if(min>v) return min;
-//        if(max<v) return max;
-//        return v;
-//    }
-
-//    // make sure all the index is available:
-//    private void ensureIndexAvailable() {
-//        pageIndex = ensureRange(0, composition.getChildren().size()-1, pageIndex);
-//        Page page = (Page) composition.getChildren().get(pageIndex);
-//        rowIndex = ensureRange(0, page.getChildren().size()-1, rowIndex);
-//        Row row = (Row)page.getChildren().get(rowIndex);
-//        columnIndex = ensureRange(0, row.getChildren().size(), columnIndex);
-//    }
 
     /**
      * 根据所赋值的页,行,列的值计算出caret的高度、x值、y值

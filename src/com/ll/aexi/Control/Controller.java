@@ -70,7 +70,6 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
                 caret.moveUp();
                 break;
         }
-        //方向键的按下不会触发keyTyped事件
         System.out.println("key preesed");
     }
 
@@ -94,6 +93,7 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     public void mouseClicked(MouseEvent e) {
         System.out.println("mouseClicked");
         composition.dispatchClickEvent(new com.ll.aexi.Model.MouseEvent(e));
+        composition.getSelection().unSelected();
     }
 
     @Override
@@ -111,6 +111,7 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
         BasicGlyph endGlyph = findHitedGlyph(e);
         if (endGlyph != null)
             composition.getSelection().setEndIndex(endGlyph.getDocumentIndex());
+        composition.dispatchClickEvent(new com.ll.aexi.Model.MouseEvent(e));
     }
 
     private BasicGlyph findHitedGlyph(MouseEvent e) {

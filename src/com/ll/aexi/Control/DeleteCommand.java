@@ -18,16 +18,21 @@ public class DeleteCommand implements Command {
     @Override
     public boolean excute() {
         Caret caret = Caret.getInstance();
+        if (composition.getSelection().getEndIndex() != Selection.UN_SELECTED) {
+            composition.getSelection().deleteSelection();
+            caret.moveToLineEnd();
+            return true;
+        }
+
         int index = caret.getInsertIndex() - 1;
         if (index < 0)
             return false;
         //TODO 这样的代码有点难以维护,需要修改
-        Character character = (Character) composition.remove(index);
-
-        if (character.getaChar() == '\n') {
+        BasicGlyph glyph = (BasicGlyph) composition.remove(index);
+        if (glyph instanceof Character && ((Character) glyph).getaChar() == '\n') {
             caret.moveToPreviousRow();
             caret.moveToLineEnd();
-        }else if (!caret.moveLeft()) {
+        } else if (!caret.moveLeft()) {
             caret.moveToPreviousRow();
             caret.moveToLineEnd();
         }
