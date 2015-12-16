@@ -1,13 +1,12 @@
 package com.ll.aexi.Model;
 
 import com.ll.aexi.Control.Compositor;
-import com.ll.aexi.Control.TestCompositor;
+import com.ll.aexi.Control.StandardCompositor;
 import com.ll.aexi.Interface.CaretListener;
 import com.ll.aexi.Interface.CompositionListener;
 import com.ll.aexi.Interface.GlyphListener;
 import com.ll.aexi.View.PageStyle;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
         //设置页面的大小
         pageStyle = new PageStyle();
         //TODO 改成工厂模式,使用配置文件生成
-        Compositor compositor = new TestCompositor();
+        Compositor compositor = new StandardCompositor();
         compositor.setComposition(this);
         setCompositor(compositor);
         compositor.compose();

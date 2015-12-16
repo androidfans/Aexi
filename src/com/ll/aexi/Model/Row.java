@@ -37,6 +37,7 @@ public class Row extends GlyphImplGroup {
             x = preFrame.getX() + preFrame.getWidth();
         }
         //如果最后一个图元的右边超过本行的最大宽度则不允许插入
+        //TODO:word中,如果超过左边的最大宽度还是允许插入的
         if (x + frame.getWidth() > getFrame().getWidth())
             return false;
         frame.setX(x);
@@ -84,7 +85,6 @@ public class Row extends GlyphImplGroup {
             //因为没有及时修改rowIndex导致这里出现Bug
             caret.setColumnIndex(getChildren().indexOf(glyph) + 1);
         }
-
         return super.onClickEvent(e);
     }
 }

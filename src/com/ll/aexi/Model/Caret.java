@@ -1,8 +1,8 @@
 package com.ll.aexi.Model;
 
 import com.ll.aexi.Interface.CaretListener;
+import com.ll.aexi.Interface.Global;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
@@ -16,6 +16,7 @@ public class Caret extends GlyphImpl {
     private Composition composition;
     private Thread thread;
     private boolean run = true;
+    private GlyphImpl hostGlyph;
 
     private Caret() {
         this.thread = new Thread(new Runnable() {
@@ -26,6 +27,7 @@ public class Caret extends GlyphImpl {
                     if (caretListener != null)
                         caretListener.CaretRefresh(Caret.this);
                     try {
+                        //闪烁频率应该由配置文件来管理
                         Thread.sleep(300);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -36,50 +38,31 @@ public class Caret extends GlyphImpl {
         thread.start();
     }
 
+    public void setHostGlyph(GlyphImpl hostGlyph) {
+        //TODO : 这里应该修改自身的坐标
+        this.hostGlyph = hostGlyph;
+        calculateFrame();
+    }
+
+    public GlyphImpl getHostGlyph() {
+        return hostGlyph;
+    }
+
     public static Caret getInstance() {
         return instance;
     }
 
     public int getInsertIndex() {
-        //找到开头的Index
-        //先找到对应的row
-        Page page = (Page) composition.getChildren().get(pageIndex);
-        Row row = (Row) page.getChildren().get(rowIndex);
-        return row.getStartDocumentIndex() + columnIndex;
+        int index = 0;
+        if (hostGlyph != null) {
+            index = composition.getDocument().getChildren().indexOf(hostGlyph);
+        }
+        return index;
     }
 
 
     public void setCaretListener(CaretListener caretListener) {
         this.caretListener = caretListener;
-    }
-
-    public Position getPositioin() {
-        return new Position(pageIndex, rowIndex, columnIndex);
-    }
-
-    public int getPageIndex() {
-        return pageIndex;
-    }
-
-    public void setPageIndex(int pageIndex) {
-        this.pageIndex = pageIndex;
-    }
-
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
-    public void setRowIndex(int rowIndex) {
-        this.rowIndex = rowIndex;
-    }
-
-    public int getColumnIndex() {
-        return columnIndex;
-    }
-
-    public void setColumnIndex(int columnIndex) {
-        this.columnIndex = columnIndex;
-        calculateFrame();
     }
 
     public Composition getComposition() {
@@ -97,54 +80,51 @@ public class Caret extends GlyphImpl {
             g.drawLine(frame.getX(), frame.getY(), frame.getX(), frame.getY() + frame.getHeight());
     }
 
-    @Override
-    public void setFrame(Frame frame) {
-        super.setFrame(frame);
-    }
-
-    /**
-     * 按下向右键的时候
-     * 如果到达已经在本行最后一个字符的后面,那么moveright的时候应该跳转到下一行的行首,
-     * 而不是跳转到下一行行首字符之后
-     * 打字时的跳转
-     * 跟随文字,始终在文字后边即可
-     *
-     * @return 是否移动成功
-     */
     public boolean moveRight() {
-        Page page = (Page) composition.getChildren().get(pageIndex);
-        Row row = (Row) page.getChildren().get(rowIndex);
-        List<GlyphImpl> rowChildren = row.getChildren();
-        //columIndex的范围 0 ~ rowChildren.size(), caret可以放置的位置比该行所有字符数多一个
-        if (columnIndex == rowChildren.size())
+        List<GlyphImpl> list = composition.getDocument().getChildren();
+        if (hostGlyph == null) {
+            if (list.size() == 0) {
+                return false;
+            }
+            GlyphImpl glyph = list.get(0);
+            setHostGlyph(glyph);
+        }
+        int index = list.indexOf(hostGlyph);
+        if (index >= list.size()) {
             return false;
-        columnIndex++;
-        calculateFrame();
+        }
+        GlyphImpl nextGlyph = list.get(index + 1);
+        setHostGlyph(nextGlyph);
         return true;
     }
 
     public boolean moveLeft() {
-        //先检查合法性
-        if (columnIndex <= 0)
+        if (hostGlyph == null) {
             return false;
-        columnIndex--;
-        calculateFrame();
+        }
+        List<GlyphImpl> list = composition.getDocument().getChildren();
+        int index = list.indexOf(hostGlyph);
+        if (index == 0) {
+            setHostGlyph(null);
+            return true;
+        }
+        GlyphImpl nextGlyph = list.get(index - 1);
+        setHostGlyph(nextGlyph);
         return true;
     }
 
     public boolean moveToNextRow() {
-        Page page = (Page) composition.getChildren().get(pageIndex);
-        //rowIndex的范围  0 ~ (pageChildren.size() - 1)
-        if (rowIndex >= page.getChildren().size() - 1)
+        if (hostGlyph == null) {
             return false;
-        rowIndex++;
-        columnIndex = 0;
-        calculateFrame();
+        }
+        Row row = (Row) hostGlyph.getParent();
+        row.getChildren()
         return true;
     }
 
     public boolean moveDown() {
         //计算出一个中心点坐标 然后分发成点击事件
+        //这样不合理,应该设计一个通用的向某一行跳的方法,然后点击事件和按键都调用这个方法
         //得到中心点的坐标
         int centerX = getFrame().getWidth() / 2 + getFrame().getX();
         int centerY = getFrame().getHeight() / 2 + getFrame().getY();
@@ -162,7 +142,7 @@ public class Caret extends GlyphImpl {
             return false;
         rowIndex--;
         columnIndex = 0;
-        calculateFrame();
+
         return true;
     }
 
@@ -170,7 +150,6 @@ public class Caret extends GlyphImpl {
         Page page = (Page) composition.getChildren().get(pageIndex);
         Row row = (Row) page.getChildren().get(rowIndex);
         columnIndex = row.getChildren().size();
-        calculateFrame();
     }
 
 
@@ -189,27 +168,18 @@ public class Caret extends GlyphImpl {
         return false;
     }
 
-
-    /**
-     * 根据所赋值的页,行,列的值计算出caret的高度、x值、y值
-     */
+    //TODO:把换行或者转义字符单独抽出来
     public void calculateFrame() {
-//        ensureIndexAvailable();
-        //根据三个index计算x,y值.难点:文字的大小无法确定
-        //第一步:取到对应的row page column
-        Page page = (Page) composition.getChildren().get(pageIndex);
-        Row row = (Row) page.getChildren().get(rowIndex);
-        //TODO 向下和其他的默认值需要查找
-        List<GlyphImpl> rowChildren = row.getChildren();
-        //TODO caret的高度的默认值需要设置
-        if (columnIndex <= 0)
-            setFrame(row.getFrame());
-        else {
-            GlyphImpl glyphImpl = rowChildren.get(columnIndex - 1);
-            Frame frame = new Frame(glyphImpl.getFrame());
-            frame.setX(frame.getX() + frame.getWidth());
-            frame.setHeight(frame.getHeight());
+        if (hostGlyph == null) {
+            //如果是空应该到第一行的起始位置
+            //TODO : 这种对composition的假设是否合理?应该加上泛型
+            Page page = (Page) composition.getChildren().get(0);
+            Row row = (Row) page.getChildren().get(0);
+            Frame frame = new Frame(row.getFrame());
             setFrame(frame);
         }
+        Frame frame = new Frame(hostGlyph.getFrame());
+        frame.setX(frame.getX() + frame.getWidth());
+        setFrame(frame);
     }
 }

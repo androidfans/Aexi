@@ -6,7 +6,7 @@ import com.ll.aexi.Model.Character;
 import java.awt.*;
 import java.util.Iterator;
 
-public class TestCompositor implements Compositor {
+public class StandardCompositor implements Compositor {
 
     public Composition composition;
 
@@ -23,6 +23,7 @@ public class TestCompositor implements Compositor {
          */
         //page的初始化
         //TODO 如果document是空  那么应该恢复为初始状态
+        //可以加入Row池和Page池,以及Character池,减少内存消耗
         Page page = new Page();
         composition.append(page);
         Row row = new Row();
