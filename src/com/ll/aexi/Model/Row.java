@@ -70,11 +70,8 @@ public class Row extends GlyphImplGroup {
     public boolean onClickEvent(MouseEvent e) {
         Caret caret = Caret.getInstance();
         //应该先给caret设置行号
-        Page page = (Page) getParent();
-        caret.setRowIndex(page.getChildren().indexOf(this));
         //进入这里说明本行中没有一个子图元能够处理该事件,或者本行中就没有子图元,应该设计一种默认的处理方式.
         if (getChildren().size() <= 0) {
-            //TODO :这里又要设置columIndex了,一定要想办法解决 ,还有rowIndex 不然会出现莫名其妙的bug
             //没有子图元,就设置caret到行首
             //抛出异常
             frame = new Frame(getFrame());
@@ -83,7 +80,6 @@ public class Row extends GlyphImplGroup {
             //所以没有子图元能够处理此事件是因为点击位置在本行最后一个子图元的右边,应该把caret设置过去
             BasicGlyph glyph = (BasicGlyph) getChildren().get(getChildren().size() - 1);
             //因为没有及时修改rowIndex导致这里出现Bug
-            caret.setColumnIndex(getChildren().indexOf(glyph) + 1);
         }
         return super.onClickEvent(e);
     }

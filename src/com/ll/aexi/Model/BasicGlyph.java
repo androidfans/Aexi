@@ -48,9 +48,6 @@ public abstract class BasicGlyph extends GlyphImpl {
         Row row = (Row) getParent();
         Page page = (Page) row.getParent();
         GlyphImplGroup pageParent = (GlyphImplGroup) page.getParent();
-        caret.setPageIndex(pageParent.getChildren().indexOf(page));
-        caret.setRowIndex(page.getChildren().indexOf(row));
-        caret.setColumnIndex(row.getChildren().indexOf(this) + indexSupply);
         return true;
     }
 }

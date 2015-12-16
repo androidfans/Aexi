@@ -20,8 +20,6 @@ public class InsertCommand implements Command {
     public boolean excute() {
         if (composition == null || glyph == null)
             return false;
-        //删除选中的字符
-        //TODO 写的太狗屎了  亟待修改
         composition.getSelection().deleteSelection();
         composition.getCaret().moveToLineEnd();
         composition.getSelection().setEndIndex(Selection.UN_SELECTED);

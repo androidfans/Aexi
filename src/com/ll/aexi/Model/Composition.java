@@ -88,15 +88,12 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
 
     @Override
     public boolean insert(GlyphImpl glyph, int index) {
+        if (compositor == null) {
+            return false;
+        }
         document.insert(glyph, index);
         compositor.compose();
-        int insertIndex = caret.getInsertIndex();
-        if (!caret.moveRight()) {
-            caret.moveToNextRow();
-            caret.moveRight();
-        }
-        if (compositor != null)
-            compositor.compose();
+        caret.setHostGlyph(glyph);
         return true;
     }
 

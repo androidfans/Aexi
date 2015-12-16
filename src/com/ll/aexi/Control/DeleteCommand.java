@@ -3,6 +3,8 @@ package com.ll.aexi.Control;
 import com.ll.aexi.Model.*;
 import com.ll.aexi.Model.Character;
 
+import java.util.List;
+
 /**
  * Created by Liuli on 2015/5/5.
  */
@@ -24,16 +26,17 @@ public class DeleteCommand implements Command {
             return true;
         }
 
-        int index = caret.getInsertIndex() - 1;
-        if (index < 0)
+        GlyphImpl glyph = caret.getHostGlyph();
+        //更换到宿主前一个,然后删掉宿主
+        List<GlyphImpl> list = composition.getDocument().getChildren();
+        if (list.size() == 0) {
             return false;
+        }
+        
         //TODO 这样的代码有点难以维护,需要修改
-        BasicGlyph glyph = (BasicGlyph) composition.remove(index);
         if (glyph instanceof Character && ((Character) glyph).getaChar() == '\n') {
-            caret.moveToPreviousRow();
             caret.moveToLineEnd();
         } else if (!caret.moveLeft()) {
-            caret.moveToPreviousRow();
             caret.moveToLineEnd();
         }
         return true;

@@ -9,9 +9,6 @@ import java.util.List;
 public class Caret extends GlyphImpl {
     private static Caret instance = new Caret();
     public CaretListener caretListener;
-    private int pageIndex = 0;
-    private int rowIndex = 0;
-    private int columnIndex = 0;
     private boolean show = true;
     private Composition composition;
     private Thread thread;
@@ -55,7 +52,7 @@ public class Caret extends GlyphImpl {
     public int getInsertIndex() {
         int index = 0;
         if (hostGlyph != null) {
-            index = composition.getDocument().getChildren().indexOf(hostGlyph);
+            index = composition.getDocument().getChildren().indexOf(hostGlyph) + 1;
         }
         return index;
     }
@@ -113,14 +110,6 @@ public class Caret extends GlyphImpl {
         return true;
     }
 
-    public boolean moveToNextRow() {
-        if (hostGlyph == null) {
-            return false;
-        }
-        Row row = (Row) hostGlyph.getParent();
-        row.getChildren()
-        return true;
-    }
 
     public boolean moveDown() {
         //计算出一个中心点坐标 然后分发成点击事件
@@ -129,27 +118,26 @@ public class Caret extends GlyphImpl {
         int centerX = getFrame().getWidth() / 2 + getFrame().getX();
         int centerY = getFrame().getHeight() / 2 + getFrame().getY();
         //获得当前行的高度
-        Page page = (Page) composition.getChildren().get(pageIndex);
-        Row row = (Row) page.getChildren().get(rowIndex);
+        Row row = (Row) hostGlyph.getParent();
         //进行偏移
         centerY += row.getFrame().getHeight();
         composition.dispatchClickEvent(new MouseEvent(centerX, centerY));
         return false;
     }
 
-    public boolean moveToPreviousRow() {
-        if (rowIndex <= 0)
-            return false;
-        rowIndex--;
-        columnIndex = 0;
-
-        return true;
-    }
-
     public void moveToLineEnd() {
-        Page page = (Page) composition.getChildren().get(pageIndex);
-        Row row = (Row) page.getChildren().get(rowIndex);
-        columnIndex = row.getChildren().size();
+        Row row = null;
+        if (hostGlyph == null) {
+            Page page = (Page) composition.getChildren().get(0);
+            row = (Row) page.getChildren().get(0);
+        } else {
+            row = (Row) hostGlyph.getParent();
+        }
+        GlyphImpl glyph = null;
+        if (row.getChildren().size() != 0) {
+            glyph = row.getChildren().get(row.getChildren().size() - 1);
+        }
+        setHostGlyph(glyph);
     }
 
 
@@ -160,8 +148,7 @@ public class Caret extends GlyphImpl {
         //Caret没有高度
         int centerY = getFrame().getHeight() / 2 + getFrame().getY();
         //获得当前行的高度
-        Page page = (Page) composition.getChildren().get(pageIndex);
-        Row row = (Row) page.getChildren().get(rowIndex);
+        Row row = (Row) hostGlyph.getParent();
         //进行偏移
         centerY -= row.getFrame().getHeight();
         composition.dispatchClickEvent(new MouseEvent(centerX, centerY));
@@ -177,6 +164,7 @@ public class Caret extends GlyphImpl {
             Row row = (Row) page.getChildren().get(0);
             Frame frame = new Frame(row.getFrame());
             setFrame(frame);
+            return;
         }
         Frame frame = new Frame(hostGlyph.getFrame());
         frame.setX(frame.getX() + frame.getWidth());
