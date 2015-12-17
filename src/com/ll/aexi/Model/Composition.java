@@ -7,6 +7,7 @@ import com.ll.aexi.Interface.CompositionListener;
 import com.ll.aexi.Interface.GlyphListener;
 import com.ll.aexi.View.PageStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class Composition extends GlyphImplGroup implements CaretListener,GlyphListener {
     private Compositor compositor;
-    private Document document;
+    private List<GlyphImpl> document;
     private CompositionListener compositionListener;
     private Caret caret;
     private PageStyle pageStyle;
@@ -34,7 +35,7 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
     }
 
     public void init() {
-        document = new Document();
+        document = new ArrayList<>();
         //设置页面的大小
         pageStyle = new PageStyle();
         //TODO 改成工厂模式,使用配置文件生成
@@ -74,7 +75,7 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
         this.compositionListener = compositionListener;
     }
 
-    public Document getDocument() {
+    public List<GlyphImpl> getDocument() {
         return document;
     }
 
@@ -91,7 +92,7 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
         if (compositor == null) {
             return false;
         }
-        document.insert(glyph, index);
+        document.add(index,glyph);
         compositor.compose();
         caret.setHostGlyph(glyph);
         return true;

@@ -35,7 +35,7 @@ public class Selection {
     }
 
     private void refreshGlyphsSelected(int startIndex,int endIndex) {
-        List<GlyphImpl> glyphs = composition.getDocument().getChildren();
+        List<GlyphImpl> glyphs = composition.getDocument();
         clearGlyphSelected(glyphs);
         for (int i = startIndex; i <= endIndex; i++) {
             BasicGlyph basicGlyph = (BasicGlyph) glyphs.get(i);
@@ -66,7 +66,7 @@ public class Selection {
     public void unSelected() {
         endIndex = UN_SELECTED;
         startIndex = UN_SELECTED;
-        List<GlyphImpl> glyphs = composition.getDocument().getChildren();
+        List<GlyphImpl> glyphs = composition.getDocument();
         clearGlyphSelected(glyphs);
     }
 

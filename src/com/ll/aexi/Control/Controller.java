@@ -115,7 +115,7 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     }
 
     private BasicGlyph findHitedGlyph(MouseEvent e) {
-        ArrayList<BasicGlyph> characters = (ArrayList) composition.getDocument().getChildren();
+        ArrayList<BasicGlyph> characters = (ArrayList) composition.getDocument();
         BasicGlyph hitedGlyph = null;
         for (BasicGlyph glyph : characters) {
             if (glyph.hitRect(e.getX(), e.getY())) {

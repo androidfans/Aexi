@@ -13,7 +13,7 @@ public class StandardCompositor implements Compositor {
     @Override
     public void compose() {
         composition.clear();
-        Iterator it = composition.getDocument().getChildren().iterator();
+        Iterator it = composition.getDocument().iterator();
         /**
          * 只考虑文字,不考虑每行的字符数限制,不考虑对行数进行分页时的格式化思路
          * 第一步:创建一个page一个row,并将row加入到page当中去

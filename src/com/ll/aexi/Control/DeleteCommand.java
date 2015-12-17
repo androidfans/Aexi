@@ -25,20 +25,20 @@ public class DeleteCommand implements Command {
             caret.moveToLineEnd();
             return true;
         }
-
         GlyphImpl glyph = caret.getHostGlyph();
+        GlyphImpl nextGlyph = null;
         //更换到宿主前一个,然后删掉宿主
-        List<GlyphImpl> list = composition.getDocument().getChildren();
-        if (list.size() == 0) {
+        List<GlyphImpl> list = composition.getDocument();
+        if (glyph == null) {
             return false;
         }
-        
-        //TODO 这样的代码有点难以维护,需要修改
-        if (glyph instanceof Character && ((Character) glyph).getaChar() == '\n') {
-            caret.moveToLineEnd();
-        } else if (!caret.moveLeft()) {
-            caret.moveToLineEnd();
+        int index = list.indexOf(glyph);
+        if (index != 0) {
+            nextGlyph = list.get(index - 1);
         }
+        caret.setHostGlyph(nextGlyph);
+        //这里有点屎
+        composition.remove(index);
         return true;
     }
 

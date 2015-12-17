@@ -52,7 +52,7 @@ public class Caret extends GlyphImpl {
     public int getInsertIndex() {
         int index = 0;
         if (hostGlyph != null) {
-            index = composition.getDocument().getChildren().indexOf(hostGlyph) + 1;
+            index = composition.getDocument().indexOf(hostGlyph) + 1;
         }
         return index;
     }
@@ -78,7 +78,7 @@ public class Caret extends GlyphImpl {
     }
 
     public boolean moveRight() {
-        List<GlyphImpl> list = composition.getDocument().getChildren();
+        List<GlyphImpl> list = composition.getDocument();
         if (hostGlyph == null) {
             if (list.size() == 0) {
                 return false;
@@ -87,7 +87,7 @@ public class Caret extends GlyphImpl {
             setHostGlyph(glyph);
         }
         int index = list.indexOf(hostGlyph);
-        if (index >= list.size()) {
+        if (index >= list.size() - 1) {
             return false;
         }
         GlyphImpl nextGlyph = list.get(index + 1);
@@ -99,7 +99,7 @@ public class Caret extends GlyphImpl {
         if (hostGlyph == null) {
             return false;
         }
-        List<GlyphImpl> list = composition.getDocument().getChildren();
+        List<GlyphImpl> list = composition.getDocument();
         int index = list.indexOf(hostGlyph);
         if (index == 0) {
             setHostGlyph(null);
