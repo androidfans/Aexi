@@ -2,13 +2,12 @@ package com.ll.aexi.Model;
 
 import sun.font.FontDesignMetrics;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
  * Created by Liuli on 2015/3/21.
  */
-public class Character extends BasicGlyph {
+public class Character extends GlyphImpl {
     private char aChar;
     private Font font;
     private FontMetrics fm;

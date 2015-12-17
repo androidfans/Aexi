@@ -35,17 +35,17 @@ public class Selection {
     }
 
     private void refreshGlyphsSelected(int startIndex,int endIndex) {
-        List<GlyphImpl> glyphs = composition.getDocument();
-        clearGlyphSelected(glyphs);
+        Document doc = composition.getDocument();
+        clearGlyphSelected(doc);
         for (int i = startIndex; i <= endIndex; i++) {
-            BasicGlyph basicGlyph = (BasicGlyph) glyphs.get(i);
+            GlyphImpl basicGlyph = (GlyphImpl) doc.get(i);
             basicGlyph.setIsSelected(true);
         }
     }
 
-    private void clearGlyphSelected(List glyphs) {
-        for (int i = 0; i < glyphs.size(); i++) {
-            BasicGlyph basicGlyph = (BasicGlyph) glyphs.get(i);
+    private void clearGlyphSelected(Document doc) {
+        for (int i = 0; i < doc.size(); i++) {
+           GlyphImpl basicGlyph = (GlyphImpl) doc.get(i);
             basicGlyph.setIsSelected(false);
         }
     }
@@ -66,8 +66,8 @@ public class Selection {
     public void unSelected() {
         endIndex = UN_SELECTED;
         startIndex = UN_SELECTED;
-        List<GlyphImpl> glyphs = composition.getDocument();
-        clearGlyphSelected(glyphs);
+        Document doc = composition.getDocument();
+        clearGlyphSelected(doc);
     }
 
     private int getMax(int a, int b) {

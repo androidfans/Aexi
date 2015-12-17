@@ -1,13 +1,12 @@
 package com.ll.aexi.Model;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 
 /**
  * Created by Liuli on 2015/3/21.
  */
-public class Bitmap extends BasicGlyph implements ImageObserver{
+public class Bitmap extends GlyphImpl implements ImageObserver{
     private Image image;
 
     public Bitmap(Image image) {

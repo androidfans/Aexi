@@ -28,7 +28,7 @@ public class DeleteCommand implements Command {
         GlyphImpl glyph = caret.getHostGlyph();
         GlyphImpl nextGlyph = null;
         //更换到宿主前一个,然后删掉宿主
-        List<GlyphImpl> list = composition.getDocument();
+        Document list = composition.getDocument();
         if (glyph == null) {
             return false;
         }

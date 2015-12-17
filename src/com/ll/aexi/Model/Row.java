@@ -60,7 +60,7 @@ public class Row extends GlyphImplGroup {
     private void fixHeight(int index) {
         List<GlyphImpl> glyphs = getChildren();
         for (int i = 0; i < index; i++) {
-            BasicGlyph glyph = (BasicGlyph) glyphs.get(i);
+            GlyphImpl glyph = (GlyphImpl) glyphs.get(i);
             int y = frame.getHeight() + frame.getY() - glyph.getFrame().getHeight();
             glyph.getFrame().setY(y);
         }
@@ -78,7 +78,7 @@ public class Row extends GlyphImplGroup {
         } else {
             //因为排版是从左到右排
             //所以没有子图元能够处理此事件是因为点击位置在本行最后一个子图元的右边,应该把caret设置过去
-            BasicGlyph glyph = (BasicGlyph) getChildren().get(getChildren().size() - 1);
+            GlyphImpl glyph = (GlyphImpl) getChildren().get(getChildren().size() - 1);
             //因为没有及时修改rowIndex导致这里出现Bug
         }
         return super.onClickEvent(e);

@@ -49,7 +49,7 @@ public class StandardCompositor implements Compositor {
 //            }
 //        }
         for (int i = 0; it.hasNext(); i ++) {
-            BasicGlyph glyph = (BasicGlyph) it.next();
+            GlyphImpl glyph = (GlyphImpl) it.next();
             glyph.setDocumentIndex(i);
             glyph.setListener(composition);
             if (glyph instanceof FormatCharacter && ((FormatCharacter) glyph).getaChar() == FormatCharacter.NEW_LINE) {

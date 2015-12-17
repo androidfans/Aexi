@@ -107,7 +107,7 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     public void mousePressed(MouseEvent e) {
         System.out.println("mousePressed");
         //找到遍历找到哪个字符被击中了
-        BasicGlyph startGlyph = findHitedGlyph(e);
+        GlyphImpl startGlyph = findHitedGlyph(e);
         if (startGlyph != null)
             composition.getSelection().setStartIndex(startGlyph.getDocumentIndex());
     }
@@ -115,16 +115,16 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     @Override
     public void mouseReleased(MouseEvent e) {
         System.out.println("mouseReleased");
-        BasicGlyph endGlyph = findHitedGlyph(e);
+        GlyphImpl endGlyph = findHitedGlyph(e);
         if (endGlyph != null)
             composition.getSelection().setEndIndex(endGlyph.getDocumentIndex());
         composition.dispatchClickEvent(new com.ll.aexi.Model.MouseEvent(e));
     }
 
-    private BasicGlyph findHitedGlyph(MouseEvent e) {
-        ArrayList<BasicGlyph> characters = (ArrayList) composition.getDocument();
-        BasicGlyph hitedGlyph = null;
-        for (BasicGlyph glyph : characters) {
+    private GlyphImpl findHitedGlyph(MouseEvent e) {
+        Document doc =  composition.getDocument();
+        GlyphImpl hitedGlyph = null;
+        for (GlyphImpl glyph : doc) {
             if (glyph.hitRect(e.getX(), e.getY())) {
                 hitedGlyph = glyph;
                 break;
@@ -146,7 +146,7 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     @Override
     public void mouseDragged(MouseEvent e) {
         System.out.println("mouseReleased");
-        BasicGlyph endGlyph = findHitedGlyph(e);
+        GlyphImpl endGlyph = findHitedGlyph(e);
         if (endGlyph != null)
             composition.getSelection().setEndIndex(endGlyph.getDocumentIndex());
     }

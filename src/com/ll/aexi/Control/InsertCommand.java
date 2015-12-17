@@ -9,9 +9,9 @@ import com.ll.aexi.Model.Character;
 public class InsertCommand implements Command {
     private Composition composition;
 
-    private BasicGlyph glyph;
+    private GlyphImpl glyph;
 
-    public InsertCommand(Composition composition, BasicGlyph glyph) {
+    public InsertCommand(Composition composition, GlyphImpl glyph) {
         this.composition = composition;
         this.glyph = glyph;
     }

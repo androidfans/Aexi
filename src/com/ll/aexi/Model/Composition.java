@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Composition extends GlyphImplGroup implements CaretListener,GlyphListener {
     private Compositor compositor;
-    private List<GlyphImpl> document;
+    private Document document;
     private CompositionListener compositionListener;
     private Caret caret;
     private PageStyle pageStyle;
@@ -35,7 +35,7 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
     }
 
     public void init() {
-        document = new ArrayList<>();
+        document = new Document();
         //设置页面的大小
         pageStyle = new PageStyle();
         //TODO 改成工厂模式,使用配置文件生成
@@ -75,7 +75,7 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
         this.compositionListener = compositionListener;
     }
 
-    public List<GlyphImpl> getDocument() {
+    public Document getDocument() {
         return document;
     }
 
