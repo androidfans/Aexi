@@ -6,24 +6,6 @@ import java.util.List;
  * Created by Liuli on 2015/3/21.
  */
 public class Row extends GlyphImplGroup {
-    private int startDocumentIndex;
-    private int endDocumentIndex;
-
-    public int getStartDocumentIndex() {
-        return startDocumentIndex;
-    }
-
-    public void setStartDocumentIndex(int startDocumentIndex) {
-        this.startDocumentIndex = startDocumentIndex;
-    }
-
-    public int getEndDocumentIndex() {
-        return endDocumentIndex;
-    }
-
-    public void setEndDocumentIndex(int endDocumentIndex) {
-        this.endDocumentIndex = endDocumentIndex;
-    }
 
     @Override
     public boolean append(GlyphImpl glyph) {
@@ -38,8 +20,10 @@ public class Row extends GlyphImplGroup {
         }
         //如果最后一个图元的右边超过本行的最大宽度则不允许插入
         //TODO:word中,如果超过左边的最大宽度还是允许插入的
-        if (x + frame.getWidth() > getFrame().getWidth())
+        if (x + frame.getWidth() > getFrame().getWidth()) {
+
             return false;
+        }
         frame.setX(x);
         if (getFrame().getHeight() > glyph.getFrame().getHeight()) {
             int y = getFrame().getHeight() + getFrame().getY() - glyph.getFrame().getHeight();
@@ -60,7 +44,7 @@ public class Row extends GlyphImplGroup {
     private void fixHeight(int index) {
         List<GlyphImpl> glyphs = getChildren();
         for (int i = 0; i < index; i++) {
-            GlyphImpl glyph = (GlyphImpl) glyphs.get(i);
+            GlyphImpl glyph = glyphs.get(i);
             int y = frame.getHeight() + frame.getY() - glyph.getFrame().getHeight();
             glyph.getFrame().setY(y);
         }
@@ -69,18 +53,15 @@ public class Row extends GlyphImplGroup {
     @Override
     public boolean onClickEvent(MouseEvent e) {
         Caret caret = Caret.getInstance();
-        //应该先给caret设置行号
-        //进入这里说明本行中没有一个子图元能够处理该事件,或者本行中就没有子图元,应该设计一种默认的处理方式.
         if (getChildren().size() <= 0) {
-            //没有子图元,就设置caret到行首
-            //抛出异常
             frame = new Frame(getFrame());
         } else {
             //因为排版是从左到右排
             //所以没有子图元能够处理此事件是因为点击位置在本行最后一个子图元的右边,应该把caret设置过去
-            GlyphImpl glyph = (GlyphImpl) getChildren().get(getChildren().size() - 1);
-            //因为没有及时修改rowIndex导致这里出现Bug
+            List<GlyphImpl> list = getChildren();
+            GlyphImpl glyph = list.get(list.size() - 1);
+            caret.setHostGlyph(glyph);
         }
-        return super.onClickEvent(e);
+        return true;
     }
 }

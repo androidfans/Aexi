@@ -8,6 +8,9 @@ import com.ll.aexi.Interface.GlyphListener;
 public abstract class GlyphImpl implements Glyph {
     protected Frame frame = new Frame();
     private Glyph parent;
+    private int documentIndex = 0;
+    private boolean isSelected = false;
+    protected GlyphListener listener;
 
     public Glyph getParent() {
         return parent;
@@ -44,14 +47,9 @@ public abstract class GlyphImpl implements Glyph {
         return false;
     }
 
-    private int documentIndex = 0;
-    private boolean isSelected = false;
-    protected GlyphListener listener;
-
     public void setListener(GlyphListener listener) {
         this.listener = listener;
     }
-
 
     public boolean isSelected() {
         return isSelected;

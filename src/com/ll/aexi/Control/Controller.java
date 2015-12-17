@@ -34,17 +34,9 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     @Override
     public void keyTyped(KeyEvent e) {
         System.out.println("key typed");
-        //TODO 需要把这里抽象出一层,按下特殊功能键时,keytyped仍然会被调用,keychar为\n
-//        composition.insert(new Character(e.getKeyChar(), font), composition.getCaret().getDocumentIndex());
         CommandManager commandManager = CommandManager.getInstance();
         Command command = null;
-
-        //现在存在的问题:代码太多插入一个字符需要修改太多的代码.
-        //步骤太过于复杂
-        //但是不可以把诸如insert之类的command封装到commandManager的内部,如果需要增加新的操作就需要修改commandMannager和command两个地方
-        //但是可以考虑的是对于的文档的操作的数量基本上是固定的.
-        //先不进行修改,先完成其他的地方
-        if (e.getKeyChar() == '\b') {
+        if (e.getKeyChar() == FormatCharacter.BACKSPACE) {
             command = new DeleteCommand(composition);
         }
         else {
@@ -106,7 +98,6 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     @Override
     public void mousePressed(MouseEvent e) {
         System.out.println("mousePressed");
-        //找到遍历找到哪个字符被击中了
         GlyphImpl startGlyph = findHitedGlyph(e);
         if (startGlyph != null)
             composition.getSelection().setStartIndex(startGlyph.getDocumentIndex());

@@ -27,7 +27,6 @@ public class DeleteCommand implements Command {
         }
         GlyphImpl glyph = caret.getHostGlyph();
         GlyphImpl nextGlyph = null;
-        //更换到宿主前一个,然后删掉宿主
         Document list = composition.getDocument();
         if (glyph == null) {
             return false;
@@ -37,7 +36,6 @@ public class DeleteCommand implements Command {
             nextGlyph = list.get(index - 1);
         }
         caret.setHostGlyph(nextGlyph);
-        //这里有点屎
         composition.remove(index);
         return true;
     }

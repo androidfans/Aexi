@@ -72,6 +72,7 @@ public class Caret extends GlyphImpl {
 
     @Override
     public void drawMe(Graphics g) {
+        System.out.println(frame);
         g.setColor(Color.BLACK);
         if (show)
             g.drawLine(frame.getX(), frame.getY(), frame.getX(), frame.getY() + frame.getHeight());
@@ -158,12 +159,11 @@ public class Caret extends GlyphImpl {
             //TODO : 这种对composition的假设是否合理?应该加上泛型
             Page page = (Page) composition.getChildren().get(0);
             Row row = (Row) page.getChildren().get(0);
-            Frame frame = new Frame(row.getFrame());
-            setFrame(frame);
+            frame.reset(row.getFrame());
             return;
         }
-        Frame frame = new Frame(hostGlyph.getFrame());
-        frame.setX(frame.getX() + frame.getWidth());
-        setFrame(frame);
+        Frame hostFrame = hostGlyph.getFrame();
+        frame.reset(hostFrame);
+        frame.setX(hostFrame.getX() + hostFrame.getWidth());
     }
 }

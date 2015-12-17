@@ -20,6 +20,13 @@ public class Frame {
         this(frame.getX(), frame.getY(), frame.getWidth(), frame.getHeight());
     }
 
+    public void reset(Frame frame) {
+        setX(frame.getX());
+        setY(frame.getY());
+        setHeight(frame.getHeight());
+        setWidth(frame.getWidth());
+    }
+
     public Frame() {
         this(0, 0, 0, 0);
     }
@@ -53,7 +60,12 @@ public class Frame {
     }
 
     public void setX(int x) {
+        System.out.println("set x : "+ x);
         this.x = x;
     }
 
+    @Override
+    public String toString() {
+        return "x : " + x + " y : " + y + " height : " + height + " width : " + width;
+    }
 }
