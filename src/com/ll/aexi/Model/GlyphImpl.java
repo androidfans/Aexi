@@ -71,12 +71,11 @@ public abstract class GlyphImpl implements Glyph {
     public boolean onClickEvent(MouseEvent e) {
         Caret caret = Caret.getInstance();
         caret.setHostGlyph(this);
-        Frame frame = new Frame(getFrame());
+        Frame frame = getFrame();
         if (e.getX() - frame.getX() <= (frame.getWidth() / 2)) {
-            frame.setX(frame.getX() + frame.getWidth());
-            //TODO : 把获取前一个和后一个的功能封装起来
+            GlyphImpl glyph = Composition.getInstance().getDocument().getPrevious(this);
+            caret.setHostGlyph(glyph);
         }
-        caret.setFrame(frame);
         return true;
     }
 }

@@ -56,8 +56,6 @@ public class Row extends GlyphImplGroup {
         if (getChildren().size() <= 0) {
             frame = new Frame(getFrame());
         } else {
-            //因为排版是从左到右排
-            //所以没有子图元能够处理此事件是因为点击位置在本行最后一个子图元的右边,应该把caret设置过去
             List<GlyphImpl> list = getChildren();
             GlyphImpl glyph = list.get(list.size() - 1);
             caret.setHostGlyph(glyph);

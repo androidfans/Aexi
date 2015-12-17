@@ -10,14 +10,13 @@ public class Document extends GlyphImplGroup implements Iterable<GlyphImpl> {
     @Override
     public boolean insert(GlyphImpl glyph, int index) {
         super.insert(glyph, index);
-//        debug();
         return true;
     }
 
     @Override
     public Glyph remove(int index) {
         Glyph glyph = super.remove(index);
-//        debug();
+
         return glyph;
     }
 

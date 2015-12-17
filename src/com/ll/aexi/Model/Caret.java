@@ -25,7 +25,7 @@ public class Caret extends GlyphImpl {
                         caretListener.CaretRefresh(Caret.this);
                     try {
                         //闪烁频率应该由配置文件来管理
-                        Thread.sleep(300);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -36,7 +36,6 @@ public class Caret extends GlyphImpl {
     }
 
     public void setHostGlyph(GlyphImpl hostGlyph) {
-        //TODO : 这里应该修改自身的坐标
         this.hostGlyph = hostGlyph;
         calculateFrame();
     }
@@ -86,8 +85,12 @@ public class Caret extends GlyphImpl {
             }
             GlyphImpl glyph = list.get(0);
             setHostGlyph(glyph);
+            return true;
         }
         GlyphImpl nextGlyph = composition.getDocument().getNext(hostGlyph);
+        if (nextGlyph == null) {
+            return false;
+        }
         setHostGlyph(nextGlyph);
         return true;
     }
@@ -95,12 +98,6 @@ public class Caret extends GlyphImpl {
     public boolean moveLeft() {
         if (hostGlyph == null) {
             return false;
-        }
-        List<GlyphImpl> list = composition.getDocument().getChildren();
-        int index = list.indexOf(hostGlyph);
-        if (index == 0) {
-            setHostGlyph(null);
-            return true;
         }
         GlyphImpl nextGlyph = composition.getDocument().getPrevious(hostGlyph);
         setHostGlyph(nextGlyph);
@@ -152,7 +149,7 @@ public class Caret extends GlyphImpl {
         return false;
     }
 
-    //TODO:把换行或者转义字符单独抽出来
+
     public void calculateFrame() {
         if (hostGlyph == null) {
             //如果是空应该到第一行的起始位置
@@ -160,10 +157,13 @@ public class Caret extends GlyphImpl {
             Page page = (Page) composition.getChildren().get(0);
             Row row = (Row) page.getChildren().get(0);
             frame.reset(row.getFrame());
-            return;
+            //TODO 这里应该设置show了
+        } else {
+            Frame hostFrame = hostGlyph.getFrame();
+            frame.reset(hostFrame);
+            frame.setX(hostFrame.getX() + hostFrame.getWidth());
         }
-        Frame hostFrame = hostGlyph.getFrame();
-        frame.reset(hostFrame);
-        frame.setX(hostFrame.getX() + hostFrame.getWidth());
+        show = true;
+        caretListener.CaretRefresh(this);
     }
 }

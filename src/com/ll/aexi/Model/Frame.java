@@ -60,7 +60,6 @@ public class Frame {
     }
 
     public void setX(int x) {
-        System.out.println("set x : "+ x);
         this.x = x;
     }
 
