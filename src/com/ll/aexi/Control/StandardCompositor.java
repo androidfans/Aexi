@@ -28,22 +28,40 @@ public class StandardCompositor implements Compositor {
         composition.append(page);
         Row row = new Row();
         //当前的排版算法非常不安全
-        for (int i = 0; it.hasNext(); i++) {
+//        for (int i = 0; it.hasNext(); i++) {
+//            BasicGlyph glyph = (BasicGlyph) it.next();
+//            glyph.setDocumentIndex(i);
+//            glyph.setListener(composition);
+//            if (glyph instanceof Character){
+//                if (((Character)glyph).getaChar() == '\n') {
+//                    row = new Row();
+//                    row.setStartDocumentIndex(i);
+//                    page.append(row);
+//                    row.append(glyph);
+//                    continue;
+//                }
+//            }
+//            if (!row.append(glyph)) {
+//                row = new Row();
+//                row.setStartDocumentIndex(i);
+//                page.append(row);
+//                row.append(glyph);
+//            }
+//        }
+        for (int i = 0; it.hasNext(); i ++) {
             BasicGlyph glyph = (BasicGlyph) it.next();
             glyph.setDocumentIndex(i);
             glyph.setListener(composition);
-            if (glyph instanceof Character){
-                if (((Character)glyph).getaChar() == '\n') {
-                    row = new Row();
-                    row.setStartDocumentIndex(i);
-                    page.append(row);
-                    row.append(glyph);
-                    continue;
-                }
+            if (glyph instanceof FormatCharacter && ((FormatCharacter) glyph).getaChar() == FormatCharacter.NEW_LINE) {
+                row = new Row();
+                row.setStartDocumentIndex(i);
+                page.append(row);
+                row.append(glyph);
+                continue;
             }
             if (!row.append(glyph)) {
                 row = new Row();
-                row.setStartDocumentIndex(i);
+                row.setEndDocumentIndex(i);
                 page.append(row);
                 row.append(glyph);
             }

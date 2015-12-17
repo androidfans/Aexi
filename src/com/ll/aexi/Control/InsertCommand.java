@@ -21,9 +21,9 @@ public class InsertCommand implements Command {
         if (composition == null || glyph == null)
             return false;
         composition.getSelection().deleteSelection();
-        composition.getCaret().moveToLineEnd();
         composition.getSelection().setEndIndex(Selection.UN_SELECTED);
         int insertIndex = composition.getCaret().getInsertIndex();
+        composition.getCaret().setHostGlyph(glyph);
         return composition.insert(glyph, insertIndex);
     }
 

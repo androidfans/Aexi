@@ -46,8 +46,15 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
         //先不进行修改,先完成其他的地方
         if (e.getKeyChar() == '\b') {
             command = new DeleteCommand(composition);
-        }else {
-            command = new InsertCommand(composition,new Character(e.getKeyChar(),font));
+        }
+        else {
+            Character character = null;
+            if (e.getKeyChar() == FormatCharacter.NEW_LINE) {
+                character = new FormatCharacter(FormatCharacter.NEW_LINE, font);
+            } else {
+                character = new Character(e.getKeyChar(), font);
+            }
+            command = new InsertCommand(composition,character);
         }
         commandManager.setCurrentCommand(command);
         commandManager.excuteCommand();
