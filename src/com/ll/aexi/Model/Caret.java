@@ -56,7 +56,6 @@ public class Caret extends GlyphImpl {
         return index;
     }
 
-
     public void setCaretListener(CaretListener caretListener) {
         this.caretListener = caretListener;
     }
@@ -157,7 +156,6 @@ public class Caret extends GlyphImpl {
             Page page = (Page) composition.getChildren().get(0);
             Row row = (Row) page.getChildren().get(0);
             frame.reset(row.getFrame());
-            //TODO 这里应该设置show了
         } else {
             Frame hostFrame = hostGlyph.getFrame();
             frame.reset(hostFrame);

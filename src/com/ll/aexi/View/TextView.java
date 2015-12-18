@@ -18,7 +18,6 @@ public class TextView extends JPanel implements CaretListener {
 
     public void setComposition(Composition composition) {
         this.composition = composition;
-        setCaret(composition.getCaret());
     }
 
     @Override
@@ -32,7 +31,7 @@ public class TextView extends JPanel implements CaretListener {
     }
 
     private void drawBackGroud(Graphics g) {
-        g.setColor(Color.WHITE);
+        g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
     }
 

@@ -7,6 +7,7 @@ import com.ll.aexi.Interface.CompositionListener;
 import com.ll.aexi.Interface.GlyphListener;
 import com.ll.aexi.View.PageStyle;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +35,23 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
         init();
     }
 
+    @Override
+    public void drawMe(Graphics g) {
+        //画背景
+        g.setColor(Color.WHITE);
+        Frame frame = getFrame();
+        g.fillRect(frame.getX(),frame.getY(),frame.getWidth(),frame.getHeight());
+        super.drawMe(g);
+    }
+
     public void init() {
         document = new Document();
         //设置页面的大小
         pageStyle = new PageStyle();
+        frame.setX(50);
+        frame.setY(100);
+        frame.setHeight(pageStyle.getHeight());
+        frame.setWidth(pageStyle.getWidth());
         //TODO 改成工厂模式,使用配置文件生成
         Compositor compositor = new StandardCompositor();
         compositor.setComposition(this);
@@ -46,6 +60,8 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
         Caret caret = Caret.getInstance();
         caret.setComposition(this);
         setCaret(caret);
+        caret.setHostGlyph(null);
+
     }
 
     public void setCompositor(Compositor compositor) {
@@ -63,8 +79,7 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
     @Override
     public boolean append(GlyphImpl glyph) {
         //TODO 不可能只有一个page需要改进
-        Page page = (Page) glyph;
-        glyph.setFrame(new Frame(pageStyle.getLeftMargin(), pageStyle.getTopMargin(), pageStyle.getWidth(), pageStyle.getHeight()));
+        glyph.setFrame(new Frame(pageStyle.getLeftMargin() + frame.getX(), pageStyle.getTopMargin() + frame.getY(), pageStyle.getWidth(), pageStyle.getHeight()));
         super.append(glyph);
         if (compositionListener != null)
             compositionListener.documentRefresh(this);

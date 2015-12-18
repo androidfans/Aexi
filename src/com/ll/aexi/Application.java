@@ -1,6 +1,7 @@
 package com.ll.aexi;
 
 import com.ll.aexi.Control.Controller;
+import com.ll.aexi.Model.Caret;
 import com.ll.aexi.Model.Composition;
 import com.ll.aexi.View.AexiMenu;
 import com.ll.aexi.View.TextView;
@@ -25,6 +26,7 @@ public class Application {
         frame.addKeyListener(controller);
         textView.addMouseListener(controller);
         textView.addMouseMotionListener(controller);
+        textView.setCaret(Caret.getInstance());
 
         Composition composition = Composition.getInstance();
         composition.setCompositionListener(controller);

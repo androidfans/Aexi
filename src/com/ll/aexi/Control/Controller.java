@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *处理键盘及鼠标逻辑的控制器类
  * Created by Liuli on 2015/3/19.
  */
-public class Controller implements CaretListener, KeyListener, CompositionListener, MouseListener,MouseMotionListener {
+public class Controller implements CaretListener, KeyListener, CompositionListener, MouseListener,MouseMotionListener{
 
     private Composition composition;
     private TextView textView;
@@ -146,4 +146,5 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
     public void mouseMoved(MouseEvent e) {
 
     }
+
 }
