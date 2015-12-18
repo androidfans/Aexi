@@ -19,8 +19,6 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
 
     private Composition composition;
     private TextView textView;
-    //当前设置的字体信息,先设置一个默认值
-    private Font font = new Font("微软雅黑", Font.BOLD, 20);
 
     public void setTextView(TextView textView) {
         this.textView = textView;
@@ -42,8 +40,10 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
         else {
             Character character = null;
             if (e.getKeyChar() == FormatCharacter.NEW_LINE) {
+                Font font = new Font(Setting.fontName, Setting.fontStyle, Setting.fontSize);
                 character = new FormatCharacter(FormatCharacter.NEW_LINE, font);
             } else {
+                Font font = new Font(Setting.fontName, Setting.fontStyle, Setting.fontSize);
                 character = new Character(e.getKeyChar(), font);
             }
             command = new InsertCommand(composition,character);

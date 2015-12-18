@@ -2,6 +2,7 @@ package com.ll.aexi.View;
 
 import com.ll.aexi.Control.CommandManager;
 import com.ll.aexi.Control.InsertCommand;
+import com.ll.aexi.Control.Setting;
 import com.ll.aexi.Model.Bitmap;
 import com.ll.aexi.Model.Composition;
 
@@ -101,6 +102,15 @@ public class AexiMenu extends JMenuBar {
         helpMenu.add(aexiOnlineItem);
         helpMenu.add(aboutItem);
 
+        JMenu fontMenu = new JMenu("字体");
+        JMenuItem boldItem = new JMenuItem("BOLD");
+        boldItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Setting.fontStyle = (Setting.fontStyle == Font.BOLD ? Font.PLAIN : Font.BOLD);
+            }
+        });
+        fontMenu.add(boldItem);
 
         add(fileMenu);
         add(editMenu);
@@ -108,5 +118,6 @@ public class AexiMenu extends JMenuBar {
         add(formatMenu);
         add(toolsMenu);
         add(helpMenu);
+        add(fontMenu);
     }
 }
