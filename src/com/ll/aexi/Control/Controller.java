@@ -90,7 +90,7 @@ public class Controller implements CaretListener, KeyListener, CompositionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("mouseClicked");
+        System.out.println("MouseClick X : " + e.getX() + " Y : " + e.getY());
         composition.dispatchClickEvent(new com.ll.aexi.Model.MouseEvent(e));
         composition.getSelection().unSelected();
     }

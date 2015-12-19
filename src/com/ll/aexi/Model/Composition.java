@@ -39,7 +39,6 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
     public void drawMe(Graphics g) {
         //画背景
         g.setColor(Color.WHITE);
-        Frame frame = getFrame();
         g.fillRect(frame.getX(),frame.getY(),frame.getWidth(),frame.getHeight());
         super.drawMe(g);
     }
@@ -51,7 +50,7 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
         frame.setX(50);
         frame.setY(100);
         frame.setHeight(pageStyle.getHeight());
-        frame.setWidth(pageStyle.getWidth());
+        frame.setWidth(100);
         //TODO 改成工厂模式,使用配置文件生成
         Compositor compositor = new StandardCompositor();
         compositor.setComposition(this);
@@ -61,7 +60,6 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
         caret.setComposition(this);
         setCaret(caret);
         caret.setHostGlyph(null);
-
     }
 
     public void setCompositor(Compositor compositor) {
@@ -79,7 +77,8 @@ public class Composition extends GlyphImplGroup implements CaretListener,GlyphLi
     @Override
     public boolean append(GlyphImpl glyph) {
         //TODO 不可能只有一个page需要改进
-        glyph.setFrame(new Frame(pageStyle.getLeftMargin() + frame.getX(), pageStyle.getTopMargin() + frame.getY(), pageStyle.getWidth(), pageStyle.getHeight()));
+        //TODO 不需要重新new一个frame
+        glyph.setFrame(new Frame(frame.getX(),frame.getY(), 100 , pageStyle.getHeight()));
         super.append(glyph);
         if (compositionListener != null)
             compositionListener.documentRefresh(this);
