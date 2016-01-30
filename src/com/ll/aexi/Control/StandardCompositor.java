@@ -20,6 +20,7 @@ public class StandardCompositor implements Compositor {
         Page page = new Page();
         composition.append(page);
         Row row = new Row();
+        page.append(row);
         //当前的排版算法非常不安全
         for (int i = 0; it.hasNext(); i ++) {
             GlyphImpl glyph = (GlyphImpl) it.next();
@@ -36,9 +37,6 @@ public class StandardCompositor implements Compositor {
                 page.append(row);
                 row.append(glyph);
             }
-        }
-        if (page.getChildren().size() <= 0) {
-            page.append(row);
         }
     }
 

@@ -24,9 +24,9 @@ public class Row extends GlyphImplGroup {
         }
         if (glyph instanceof Bitmap) {
             Bitmap bitmap = (Bitmap) glyph;
-            bitmap.scaleWidth(space);
+            bitmap.shrinkWidth(space);
         } else {
-            if (this.width > space) {
+            if (glyph.width > space) {
                 return false;
             }
         }

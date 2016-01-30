@@ -14,10 +14,15 @@ public class Bitmap extends GlyphImpl implements ImageObserver{
         this.image = image;
         setWidth(image.getWidth(this));
         setHeight(image.getHeight(this));
-        ratio = (float) width / (float)height;
+        if (height != 0) {
+            ratio = (float) width / (float)height;
+        }
     }
 
-    public void scaleWidth(int width) {
+    public void shrinkWidth(int width) {
+        if (width >= this.width) {
+            return;
+        }
         setWidth(width);
         setHeight((int) (width / ratio));
     }
@@ -26,7 +31,6 @@ public class Bitmap extends GlyphImpl implements ImageObserver{
         setHeight(height);
         setWidth((int) (height * ratio));
     }
-
 
     @Override
     public void drawMe(Graphics g) {
@@ -39,6 +43,7 @@ public class Bitmap extends GlyphImpl implements ImageObserver{
         if (width != -1 && height != -1) {
             setWidth(width);
             setHeight(height);
+            ratio = (float) width / (float)height;
             if (listener != null)
                 listener.glyphRefresh();
         }
