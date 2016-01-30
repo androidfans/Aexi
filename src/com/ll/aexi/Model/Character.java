@@ -17,9 +17,8 @@ public class Character extends GlyphImpl {
         this.aChar = aChar;
         //初始化frame
         fm = FontDesignMetrics.getMetrics(font);
-        Frame frame = getFrame();
-        frame.setWidth(fm.charWidth(aChar));
-        frame.setHeight(fm.getAscent() + fm.getDescent());
+        setWidth(fm.charWidth(aChar));
+        setHeight(fm.getAscent() + fm.getDescent());
     }
 
     public char getaChar() {
@@ -42,11 +41,11 @@ public class Character extends GlyphImpl {
     public void drawMe(Graphics g) {
         if (isSelected()) {
             g.setColor(new Color(0x46,0xa3,0xff));
-            g.fillRect(frame.getX(),frame.getY(),frame.getWidth(),frame.getHeight());
+            g.fillRect(x,y,width,width);
         }
         g.setColor(Color.BLACK);
         g.setFont(font);
-        g.drawString(aChar + "", frame.getX(), frame.getY() + fm.getAscent());
+        g.drawString(aChar + "", x, y + fm.getAscent());
     }
 
 

@@ -11,18 +11,15 @@ public class Page extends GlyphImplGroup {
         super.append(glyph);
         Row row = (Row) glyph;
         List<GlyphImpl> children = getChildren();
-        Frame frame = new Frame();
-        frame.setWidth(getFrame().getWidth());
-        frame.setHeight(20);
-        frame.setX(getFrame().getX());
+        row.setWidth(width);
+        row.setHeight(20);
+        row.setX(x);
         if (children.size() <= 1) {
-            frame.setY(getFrame().getY());
+            row.setY(y);
         } else {
             Row preRow = (Row) children.get(children.size() - 2);
-            Frame preRowFrame = preRow.getFrame();
-            frame.setY(preRowFrame.getY() + preRowFrame.getHeight());
+            row.setY(preRow.getY() + preRow.getHeight());
         }
-        row.setFrame(frame);
         return true;
     }
 }

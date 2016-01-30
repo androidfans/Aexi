@@ -70,10 +70,9 @@ public class Caret extends GlyphImpl {
 
     @Override
     public void drawMe(Graphics g) {
-        System.out.println(frame);
         g.setColor(Color.BLACK);
         if (show)
-            g.drawLine(frame.getX(), frame.getY(), frame.getX(), frame.getY() + frame.getHeight());
+            g.drawLine(x, y, x, y + height);
     }
 
     public boolean moveRight() {
@@ -108,12 +107,12 @@ public class Caret extends GlyphImpl {
         //计算出一个中心点坐标 然后分发成点击事件
         //这样不合理,应该设计一个通用的向某一行跳的方法,然后点击事件和按键都调用这个方法
         //得到中心点的坐标
-        int centerX = getFrame().getWidth() / 2 + getFrame().getX();
-        int centerY = getFrame().getHeight() / 2 + getFrame().getY();
+        int centerX = width / 2 + x;
+        int centerY = height / 2 + y;
         //获得当前行的高度
         Row row = (Row) hostGlyph.getParent();
         //进行偏移
-        centerY += row.getFrame().getHeight();
+        centerY += row.getHeight();
         composition.dispatchClickEvent(new MouseEvent(centerX, centerY));
         return false;
     }
@@ -137,13 +136,13 @@ public class Caret extends GlyphImpl {
     public boolean moveUp() {
         //计算出一个中心点坐标 然后分发成点击事件
         //得到中心点的坐标
-        int centerX = getFrame().getWidth() / 2 + getFrame().getX();
+        int centerX = width / 2 + x;
         //Caret没有高度
-        int centerY = getFrame().getHeight() / 2 + getFrame().getY();
+        int centerY = height / 2 + y;
         //获得当前行的高度
         Row row = (Row) hostGlyph.getParent();
         //进行偏移
-        centerY -= row.getFrame().getHeight();
+        centerY -= row.getHeight();
         composition.dispatchClickEvent(new MouseEvent(centerX, centerY));
         return false;
     }
@@ -155,11 +154,15 @@ public class Caret extends GlyphImpl {
             //TODO : 这种对composition的假设是否合理?应该加上泛型
             Page page = (Page) composition.getChildren().get(0);
             Row row = (Row) page.getChildren().get(0);
-            frame.reset(row.getFrame());
+            x = row.getX();
+            y = row.getY();
+            width = row.getWidth();
+            height = row.getHeight();
         } else {
-            Frame hostFrame = hostGlyph.getFrame();
-            frame.reset(hostFrame);
-            frame.setX(hostFrame.getX() + hostFrame.getWidth());
+            x = hostGlyph.getX() + hostGlyph.getWidth();
+            y = hostGlyph.getY();
+            width = hostGlyph.getWidth();
+            height = hostGlyph.getHeight();
         }
         show = true;
         caretListener.CaretRefresh(this);

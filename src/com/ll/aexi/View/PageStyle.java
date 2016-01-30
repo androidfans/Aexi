@@ -21,7 +21,7 @@ public class PageStyle {
     private int bottomMargin;
 
     public PageStyle() {
-        reset(Paper.A4);
+        reset(Paper.TEST);
     }
 
     public PageStyle(Paper paper) {

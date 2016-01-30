@@ -6,11 +6,47 @@ import com.ll.aexi.Interface.GlyphListener;
  * Created by Liuli on 2015/3/21.
  */
 public abstract class GlyphImpl implements Glyph {
-    protected Frame frame = new Frame();
     private Glyph parent;
     private int documentIndex = 0;
     private boolean isSelected = false;
     protected GlyphListener listener;
+    protected int x;
+    protected int y;
+    protected int width;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    protected int height;
 
     public Glyph getParent() {
         return parent;
@@ -20,19 +56,10 @@ public abstract class GlyphImpl implements Glyph {
         this.parent = parent;
     }
 
-    public Frame getFrame() {
-        return frame;
-    }
-
-    public void setFrame(Frame frame) {
-        this.frame = frame;
-    }
-
     public boolean hitRect(int x, int y) {
-        Frame frame = getFrame();
-        if (x > (frame.getX() + frame.getWidth()) || x < frame.getX())
+        if (x > (x + width) || x < this.x)
             return false;
-        return !(y > (frame.getY() + frame.getHeight()) || y < frame.getY());
+        return !(y > (y + height) || y < this.y);
     }
 
     @Override
@@ -71,8 +98,7 @@ public abstract class GlyphImpl implements Glyph {
     public boolean onClickEvent(MouseEvent e) {
         Caret caret = Caret.getInstance();
         caret.setHostGlyph(this);
-        Frame frame = getFrame();
-        if (e.getX() - frame.getX() <= (frame.getWidth() / 2)) {
+        if (e.getX() - x <= (width / 2)) {
             GlyphImpl glyph = Composition.getInstance().getDocument().getPrevious(this);
             caret.setHostGlyph(glyph);
         }
