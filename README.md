@@ -1,5 +1,6 @@
 #AEXI
-将AEXI移植到Android平台的项目是[AEXI-Android](https://github.com/androidfans/Aexi-Android).
+**将AEXI移植到Android平台的项目是[AEXI-Android](https://github.com/androidfans/Aexi-Android).**
+
 AEXI是一个富文本的编辑器,基于Java平台的Swing库实现.AEXI来自于《Design Pattern》一书中第三章的例子**Jexi**.我觉得这是个非常好的练习各种设计模式的项目,并且Android平台上现有的富文本编辑器都是基于Webview实现的,所以就开发了这样一个框架.选择基于Swing库实现AEXI主要是考虑到Swing可以在PC上调试起来非常的方便.但是AEXI的目标最终是封装成Android平台上的一个库.方便客户端程序员直接使用.由于Android平台可以直接使用Java语言编写,所以AEXI的代码在移植时可以复用绝大部分,只需要更改部分图像绘制和系统功能交互相关的API即可.
 目前这一版的AEXI主要实现的功能有:
 
